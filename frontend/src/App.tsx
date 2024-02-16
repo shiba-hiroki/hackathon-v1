@@ -2,9 +2,12 @@ import { useState } from "react";
 import "@/App.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { QRCodeCanvas } from "qrcode.react";
 
 function App() {
   const [count, setCount] = useState(0);
+  const id = "fdgsdfgraegfa";
+  const status = "stop";
 
   return (
     <>
@@ -16,12 +19,9 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
-        <Input type="time">
-        </Input>
+        <Input type="time"></Input>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <QRCodeCanvas value={`id=${id};status=${status}`} />
     </>
   );
 }
