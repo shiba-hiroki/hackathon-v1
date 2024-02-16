@@ -1,5 +1,5 @@
 {
-  "name": "@pablo/qr-shift-entity",
+  "name": "qr-shift-entity",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.ts",
