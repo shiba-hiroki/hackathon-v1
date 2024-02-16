@@ -1,1 +1,2 @@
-export * from "./entity/shift";
+export * from "./entity/Shift";
+export * from "./entity/AttendanceRecord"
