@@ -1,15 +1,15 @@
 import z from "zod";
 
-const ShiftParser = z.object({
+const AttendanceRecordParser = z.object({
   userID: z.string(),
   startTime: z.date(),
   endTime: z.date(),
 });
 
-export type Shift = z.infer<typeof ShiftParser>;
+export type AttendanceRecord = z.infer<typeof AttendanceRecordParser>;
 
-export const parseAsShift = (data: any): Shift | Error => {
-  const validationResponse = ShiftParser.safeParse(data);
+export const parseAsAttendanceRecord = (data: any): AttendanceRecord | Error => {
+  const validationResponse = AttendanceRecordParser.safeParse(data);
   return validationResponse.success
     ? validationResponse.data
     : validationResponse.error;
