@@ -17,7 +17,7 @@ npm run dev
 ## database にテーブルを作成
 
 ```zsh
-npx wrangler d1 execute hackathon --local --file="./database/migration.sql
+npx wrangler d1 execute hackathon --local --file="./database/migration.sql"
 ```
 
 ## database に初期データ投入
