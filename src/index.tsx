@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { QR } from "./page/QR";
-import { QRcodeRequest, MIME_TYPE } from "./entity/QRcodeRequest";
+import { QRcodeRequest, MIME_TYPE } from "./schema/QRcodeRequest";
 
 export const app = new Hono({ strict: false });
 
