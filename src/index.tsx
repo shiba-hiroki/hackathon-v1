@@ -1,34 +1,20 @@
-import type { FC } from "hono/jsx";
 import { Hono } from "hono";
+import { QR } from "./page/QR";
+import { QRcodeRequest, MIME_TYPE } from "./entity/QRcodeRequest";
 
+export const app = new Hono({ strict: false });
 
-const app = new Hono();
-
-const Layout: FC = (props) => {
-	return (
+app.get("/qr", (c) => {
+	const query = c.req.query();
+	const options = QRcodeRequest.parse(query);
+	c.header("Content-Type", MIME_TYPE[options.type]);
+	c.status(201);
+	return c.html(
 		// biome-ignore lint/a11y/useHtmlLang: <explanation>
 		<html>
-			<body>{props.children}</body>
-		</html>
+			<QR id={"test"} />
+		</html>,
 	);
-};
-
-const Top: FC<{ messages: string[] }> = (props: { messages: string[] }) => {
-	return (
-		<Layout>
-			<h1>Hello Hono!</h1>
-			<ul>
-				{props.messages.map((message) => {
-					return <li>{message}!!</li>;
-				})}
-			</ul>
-		</Layout>
-	);
-};
-
-app.get("/", (c) => {
-	const messages = ["Good Morning", "Good Evening", "Good Night"];
-	return c.html(<Top messages={messages} />);
 });
 
-app.fire()
+export default app;
