@@ -1,9 +1,9 @@
 CREATE TABLE users (
     id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
+    name TEXT NOT NULL UNIQUE,
     type TEXT CHECK(type IN ('employer', 'employee')) NOT NULL,
-    hashed_password BLOB NOT NULL,
-    hourly_wage INTEGER NOT NULL
+    hashed_password TEXT NOT NULL,
+    hourly_wage INTEGER
 );
 
 CREATE TABLE attendance_records (

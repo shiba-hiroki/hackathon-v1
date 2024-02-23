@@ -2,6 +2,10 @@ name = "backend"
 compatibility_date = "2023-12-01"
 main = "src/index.ts"
 
+[vars]
+ENCRYPTION_KEY = "MxiqsEVMdICHsMoFwnxSkQ==" # example
+INITIALIZATION_VECTOR = "8y9PLzSSAhvWZzYm" # example
+
 [[kv_namespaces]]
 binding = "hackathon"
 id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
