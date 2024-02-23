@@ -2,32 +2,42 @@
 
 ## local 実行
 
+### bun install
+
+```zsh
+curl -fsSL https://bun.sh/install | bash
+```
+
+```powershell
+powershell -c "irm bun.sh/install.ps1|iex"
+```
+
 ### package install
 
 ```zsh
-npm install
+bun install
 ```
 
 ### database と backend 起動
 
 ```zsh
-npm run dev
+bun run dev
 ```
 
 ## database にテーブルを作成
 
 ```zsh
-npx wrangler d1 execute hackathon --local --file="./database/migration.sql"
+bun run migration
 ```
 
 ## database に初期データ投入
 
 ```zsh
-npx wrangler d1 execute hackathon --local --file="./database/init.sql"
+bun run init
 ```
 
 ## deploy
 
 ```zsh
-npm run deploy
+bun run deploy
 ```
