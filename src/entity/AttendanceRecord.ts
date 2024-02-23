@@ -1,17 +1,17 @@
 import z from "zod";
 
-const AttendanceRecordParser = z.object({
+const AttendanceRecord = z.object({
 	userID: z.string(),
 	time: z.date(),
 	state: z.enum(["checkIn", "checkOut", "brakeStart", "brakeEnd"]),
 });
 
-export type AttendanceRecord = z.infer<typeof AttendanceRecordParser>;
+export type AttendanceRecord = z.infer<typeof AttendanceRecord>;
 
 export const parseAsAttendanceRecord = (
 	data: unknown,
 ): AttendanceRecord | Error => {
-	const validationResponse = AttendanceRecordParser.safeParse(data);
+	const validationResponse = AttendanceRecord.safeParse(data);
 	return validationResponse.success
 		? validationResponse.data
 		: validationResponse.error;

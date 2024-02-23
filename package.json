@@ -2,9 +2,13 @@
   "scripts": {
     "dev": "wrangler dev src/index.ts",
     "deploy": "wrangler deploy --minify src/index.ts",
-    "check": "bunx @biomejs/biome check --apply ."
+    "check": "bunx @biomejs/biome check --apply .",
+    "migration": "bun wrangler d1 execute hackathon --local --file=\"./database/migration.sql\"",
+    "init": "bun wrangler d1 execute hackathon --local --file=\"./database/init.sql\"",
+    "destroy": "rm -rf ./.wrangler"
   },
   "dependencies": {
+    "@hono/zod-openapi": "^0.9.6",
     "hono": "^4.0.3",
     "zod": "^3.22.4"
   },
