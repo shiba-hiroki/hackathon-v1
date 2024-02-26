@@ -1,7 +1,6 @@
 import z from "zod";
 
 const AttendanceRecord = z.object({
-	userID: z.string(),
 	time: z.date(),
 	state: z.enum(["checkIn", "checkOut", "brakeStart", "brakeEnd"]),
 });

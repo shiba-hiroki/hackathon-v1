@@ -24,11 +24,21 @@ bun install
 bun run dev
 ```
 
-## database にテーブルを作成
+## マイグレーション(データベースにテーブル作成若しくは更新)
 
+マイグレーション用sql作成
+```zsh
+bunx drizzle-kit generate:sqlite
+```
+
+マイグレーション実行
 ```zsh
 bun run migration
 ```
+
+
+
+
 
 ## database に初期データ投入
 
