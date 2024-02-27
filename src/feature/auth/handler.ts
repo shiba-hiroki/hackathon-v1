@@ -1,8 +1,7 @@
 import { RouteHandler } from "@hono/zod-openapi";
 import { StatusCodes } from "http-status-codes";
 import { KV } from "../../kv/interface";
-import { Base64ToUint8Array } from "../../util/arrayBuffer";
-import { getCryptKey } from "../../util/crypt";
+import { decodePassword } from "../../util/hash";
 import { UserRepository } from "../user/interface";
 import { LoginRouter } from "./router";
 
@@ -24,7 +23,7 @@ export const useLoginHandler =
 
 		const decodedPassword = await decodePassword(
 			initializationVector,
-			await getCryptKey(encryptionKey),
+			encryptionKey,
 			userWithHashedPassword.hashedPassword,
 		);
 
@@ -36,16 +35,3 @@ export const useLoginHandler =
 
 		return c.json({ sessionID }, StatusCodes.CREATED);
 	};
-
-const decodePassword = async (
-	initializationVector: string,
-	cryptoKey: CryptoKey,
-	hashedPassword: string,
-) =>
-	new TextDecoder("utf-8").decode(
-		await crypto.subtle.decrypt(
-			{ name: "AES-GCM", iv: Base64ToUint8Array(initializationVector) },
-			cryptoKey,
-			Base64ToUint8Array(hashedPassword),
-		),
-	);

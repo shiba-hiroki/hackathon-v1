@@ -2,16 +2,19 @@ import { createRoute } from "@hono/zod-openapi";
 import { StatusCodes } from "http-status-codes";
 import { MIME } from "../../util/mime";
 import { ErrorMessageSchema } from "../../util/schema";
-import { LoginRequestSchema, LoginResPonseSchema } from "./schema";
+import {
+	EmployeeRegistrationRequestSchema,
+	EmployeeRegistrationResponseSchema,
+} from "./schema";
 
-export const LoginRouter = createRoute({
+export const EmployeeRegistrationRouter = createRoute({
 	method: "post",
-	path: "api/login",
+	path: "api/employer/employee",
 	request: {
 		body: {
 			content: {
 				[MIME.json]: {
-					schema: LoginRequestSchema,
+					schema: EmployeeRegistrationRequestSchema,
 				},
 			},
 		},
@@ -20,10 +23,10 @@ export const LoginRouter = createRoute({
 		[StatusCodes.CREATED]: {
 			content: {
 				[MIME.json]: {
-					schema: LoginResPonseSchema,
+					schema: EmployeeRegistrationResponseSchema,
 				},
 			},
-			description: "login succeeded",
+			description: "Successfully registered the employee",
 		},
 		[StatusCodes.UNAUTHORIZED]: {
 			content: {
@@ -31,15 +34,15 @@ export const LoginRouter = createRoute({
 					schema: ErrorMessageSchema,
 				},
 			},
-			description: "wrong password",
+			description: "unauthorized",
 		},
-		[StatusCodes.NOT_FOUND]: {
+		[StatusCodes.FORBIDDEN]: {
 			content: {
 				[MIME.json]: {
 					schema: ErrorMessageSchema,
 				},
 			},
-			description: "user not found",
+			description: "not employer",
 		},
 		[StatusCodes.INTERNAL_SERVER_ERROR]: {
 			content: {
