@@ -1,7 +1,7 @@
 import { createRoute } from "@hono/zod-openapi";
 import { StatusCodes } from "http-status-codes";
-import { MIME } from "../util/mime";
-import { ErrorMessageSchema } from "../util/schema";
+import { MIME } from "../../util/mime";
+import { ErrorMessageSchema } from "../../util/schema";
 import { LoginRequestSchema, LoginResPonseSchema } from "./schema";
 
 export const LoginRouter = createRoute({
