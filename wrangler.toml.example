@@ -7,7 +7,7 @@ ENCRYPTION_KEY = "MxiqsEVMdICHsMoFwnxSkQ==" # example
 INITIALIZATION_VECTOR = "8y9PLzSSAhvWZzYm" # example
 
 [[kv_namespaces]]
-binding = "hackathon"
+binding = "KV"
 id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 [[d1_databases]]
