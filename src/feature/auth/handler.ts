@@ -1,4 +1,6 @@
 import { RouteHandler } from "@hono/zod-openapi";
+import { Context } from "hono";
+import { setCookie } from "hono/cookie";
 import { StatusCodes } from "http-status-codes";
 import { KV } from "../../kv/interface";
 import { decodePassword } from "../../util/hash";
@@ -7,23 +9,24 @@ import { LoginRouter } from "./router";
 
 export const useLoginHandler =
 	(
-		kv: KV,
-		userRepository: UserRepository,
-		encryptionKey: string,
-		initializationVector: string,
+		kvFactory: (c: Context) => KV,
+		userRepositoryFactory: (c: Context) => UserRepository,
+		encryptionKeyFactory: (c: Context) => string,
+		initializationVectorFactory: (c: Context) => string,
 	): RouteHandler<typeof LoginRouter> =>
 	async (c) => {
 		const { name, password } = c.req.valid("json");
 
-		const userWithHashedPassword = await userRepository.findByName(name);
+		const userWithHashedPassword =
+			await userRepositoryFactory(c).findByName(name);
 
 		if (userWithHashedPassword == null) {
 			return c.json({ message: "user not found" }, StatusCodes.NOT_FOUND);
 		}
 
 		const decodedPassword = await decodePassword(
-			initializationVector,
-			encryptionKey,
+			initializationVectorFactory(c),
+			encryptionKeyFactory(c),
 			userWithHashedPassword.hashedPassword,
 		);
 
@@ -31,7 +34,18 @@ export const useLoginHandler =
 			return c.json({ message: "unauthorized" }, StatusCodes.UNAUTHORIZED);
 		}
 
-		const sessionID = await kv.createSessionID(userWithHashedPassword.id);
+		const sessionID = await kvFactory(c).createSessionID(
+			userWithHashedPassword.id,
+			3600,
+		);
 
-		return c.json({ sessionID }, StatusCodes.CREATED);
+		await setCookie(c, "session_cookie", sessionID, {
+			path: "/api",
+			secure: true,
+			httpOnly: true,
+			maxAge: 3600,
+			sameSite: "Strict",
+		});
+
+		return c.json(StatusCodes.CREATED);
 	};

@@ -1,3 +1,3 @@
 export interface KV {
-	createSessionID(userID: number): Promise<string>;
+	createSessionID(userID: number, ttl: number): Promise<string>;
 }

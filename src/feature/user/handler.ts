@@ -3,20 +3,20 @@ import { Context } from "hono";
 import { StatusCodes } from "http-status-codes";
 import { hashedPassword } from "../../util/hash";
 import { UserRepository } from "./interface";
-import { EmployeeRegistrationRouter } from "./router";
+import { UserRegistrationRouter } from "./router";
 
-export const useEmployeeRegistrationHandler =
+export const useUserRegistrationHandler =
 	(
 		userRepositoryFactory: (c: Context) => UserRepository,
 		encryptionKeyFactory: (c: Context) => string,
 		initializationVectorFactory: (c: Context) => string,
-	): RouteHandler<typeof EmployeeRegistrationRouter> =>
+	): RouteHandler<typeof UserRegistrationRouter> =>
 	async (c) => {
-		const { name, password } = c.req.valid("json");
+		const { name, type, password } = c.req.valid("json");
 
 		const user = await userRepositoryFactory(c).crate({
 			name,
-			type: "employee",
+			type,
 			hashedPassword: await hashedPassword(
 				initializationVectorFactory(c),
 				encryptionKeyFactory(c),
