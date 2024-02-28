@@ -1,32 +1,58 @@
 import { Context } from "hono";
 import { useLoginHandler } from "./feature/auth/handler";
-import { useEmployerAuthentication } from "./feature/auth/middleware";
+import {
+	useEmployeeAuthentication,
+	useEmployerAuthentication,
+	useUserAuthentication,
+} from "./feature/auth/middleware";
+import { User } from "./feature/user/entity";
 import { useUserRegistrationHandler } from "./feature/user/handler";
 import { useUserRepository } from "./feature/user/repository";
 import { useKV } from "./kv/kv";
 
-type Bindings = {
-	DB: D1Database;
-	KV: KVNamespace;
-	ENCRYPTION_KEY: string;
-	INITIALIZATION_VECTOR: string;
+export type Env = {
+	Variables: {
+		user: User;
+	};
+	Bindings: {
+		DB: D1Database;
+		KV: KVNamespace;
+		ENCRYPTION_KEY: string;
+		INITIALIZATION_VECTOR: string;
+	};
 };
 
-type ContextWithBindings = Context<{ Bindings: Bindings }>;
+export type ContextWithEnv = Context<Env>;
 
-const kvFactory = (c: ContextWithBindings) => useKV(c.env.KV);
+const kvFactory = (c: ContextWithEnv) => useKV(c.env.KV);
 
-const userRepositoryFactory = (c: ContextWithBindings) =>
+const userRepositoryFactory = (c: ContextWithEnv) =>
 	useUserRepository(c.env.DB);
 
-const encryptionKeyFactory = (c: ContextWithBindings) => c.env.ENCRYPTION_KEY;
+const encryptionKeyFactory = (c: ContextWithEnv) => c.env.ENCRYPTION_KEY;
 
-const initializationVectorFactory = (c: ContextWithBindings) =>
+const initializationVectorFactory = (c: ContextWithEnv) =>
 	c.env.INITIALIZATION_VECTOR;
+
+const setUserInContext = (c: ContextWithEnv) => (user: User) =>
+	c.set("user", user);
+
+export const userAuthentication = useUserAuthentication(
+	kvFactory,
+	userRepositoryFactory,
+	setUserInContext,
+);
 
 export const employerAuthentication = useEmployerAuthentication(
 	kvFactory,
 	userRepositoryFactory,
+	setUserInContext,
+);
+
+export const employeeAuthentication = useEmployeeAuthentication(
+	kvFactory,
+	userRepositoryFactory,
+	setUserInContext,
 );
 
 export const loginHandler = useLoginHandler(

@@ -1,15 +1,18 @@
 import { RouteHandler } from "@hono/zod-openapi";
-import { Context } from "hono";
 import { StatusCodes } from "http-status-codes";
+import {
+	encryptionKeyFactory,
+	initializationVectorFactory,
+	userRepositoryFactory,
+} from "../../factoryType";
 import { hashedPassword } from "../../util/hash";
-import { UserRepository } from "./interface";
 import { UserRegistrationRouter } from "./router";
 
 export const useUserRegistrationHandler =
 	(
-		userRepositoryFactory: (c: Context) => UserRepository,
-		encryptionKeyFactory: (c: Context) => string,
-		initializationVectorFactory: (c: Context) => string,
+		userRepositoryFactory: userRepositoryFactory,
+		encryptionKeyFactory: encryptionKeyFactory,
+		initializationVectorFactory: initializationVectorFactory,
 	): RouteHandler<typeof UserRegistrationRouter> =>
 	async (c) => {
 		const { name, type, password } = c.req.valid("json");

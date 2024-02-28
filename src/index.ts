@@ -3,8 +3,10 @@ import { OpenAPIHono } from "@hono/zod-openapi";
 import { secureHeaders } from "hono/secure-headers";
 import { StatusCodes } from "http-status-codes";
 import {
+	employeeAuthentication,
 	employerAuthentication,
 	loginHandler,
+	userAuthentication,
 	userRegistrationHandler,
 } from "./di";
 import { LoginRouter } from "./feature/auth/router";
@@ -24,7 +26,9 @@ app.doc("/doc", {
 
 app.get("/ui", swaggerUI({ url: "/doc" }));
 
+app.use("/api/user/*", userAuthentication);
 app.use("/api/employer/*", employerAuthentication);
+app.use("/api/employee/*", employeeAuthentication);
 
 app.openapi(LoginRouter, loginHandler);
 
