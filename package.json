@@ -8,6 +8,7 @@
 		"destroy": "rm -rf ./.wrangler"
 	},
 	"dependencies": {
+		"@hono/swagger-ui": "^0.2.1",
 		"@hono/zod-openapi": "^0.9.6",
 		"drizzle-orm": "^0.29.4",
 		"hono": "^4.0.3",

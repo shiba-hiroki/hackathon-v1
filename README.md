@@ -2,6 +2,11 @@
 
 ## local 実行
 
+## 環境変数の設定
+```zsh
+ cp wrangler.toml.example wrangler.toml
+```
+
 ### bun install
 
 ```zsh
