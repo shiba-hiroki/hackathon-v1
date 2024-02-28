@@ -1,7 +1,6 @@
 import z from "zod";
 
 const Shift = z.object({
-	userID: z.string(),
 	startTime: z.date(),
 	endTime: z.date(),
 });
