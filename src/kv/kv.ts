@@ -9,5 +9,8 @@ export const useKV = (kv: KVNamespace): KV => {
 			});
 			return sessionID;
 		},
+		async getUserID(sessionID) {
+			return kv.get(sessionID);
+		},
 	};
 };

@@ -2,7 +2,11 @@ import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { secureHeaders } from "hono/secure-headers";
 import { StatusCodes } from "http-status-codes";
-import { loginHandler, userRegistrationHandler } from "./di";
+import {
+	employerAuthentication,
+	loginHandler,
+	userRegistrationHandler,
+} from "./di";
 import { LoginRouter } from "./feature/auth/router";
 import { UserRegistrationRouter } from "./feature/user/router";
 
@@ -19,6 +23,8 @@ app.doc("/doc", {
 });
 
 app.get("/ui", swaggerUI({ url: "/doc" }));
+
+app.use("/api/employer/*", employerAuthentication);
 
 app.openapi(LoginRouter, loginHandler);
 

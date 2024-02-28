@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { KV } from "../../kv/interface";
 import { decodePassword } from "../../util/hash";
 import { UserRepository } from "../user/interface";
+import { sessionCookieName, sessionIdTTL } from "./const";
 import { LoginRouter } from "./router";
 
 export const useLoginHandler =
@@ -36,14 +37,14 @@ export const useLoginHandler =
 
 		const sessionID = await kvFactory(c).createSessionID(
 			userWithHashedPassword.id,
-			3600,
+			sessionIdTTL,
 		);
 
-		setCookie(c, "session_cookie", sessionID, {
+		setCookie(c, sessionCookieName, sessionID, {
 			path: "/api",
 			secure: true,
 			httpOnly: true,
-			maxAge: 3600,
+			maxAge: sessionIdTTL,
 			sameSite: "Strict",
 		});
 

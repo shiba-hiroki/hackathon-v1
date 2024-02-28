@@ -1,5 +1,6 @@
 import { Context } from "hono";
 import { useLoginHandler } from "./feature/auth/handler";
+import { useEmployerAuthentication } from "./feature/auth/middleware";
 import { useUserRegistrationHandler } from "./feature/user/handler";
 import { useUserRepository } from "./feature/user/repository";
 import { useKV } from "./kv/kv";
@@ -22,6 +23,11 @@ const encryptionKeyFactory = (c: ContextWithBindings) => c.env.ENCRYPTION_KEY;
 
 const initializationVectorFactory = (c: ContextWithBindings) =>
 	c.env.INITIALIZATION_VECTOR;
+
+export const employerAuthentication = useEmployerAuthentication(
+	kvFactory,
+	userRepositoryFactory,
+);
 
 export const loginHandler = useLoginHandler(
 	kvFactory,
