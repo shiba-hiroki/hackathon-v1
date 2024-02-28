@@ -2,10 +2,10 @@ import { KV } from "./interface";
 
 export const useKV = (kv: KVNamespace): KV => {
 	return {
-		async createSessionID(userID) {
+		async createSessionID(userID, ttl) {
 			const sessionID = crypto.randomUUID();
 			await kv.put(sessionID, userID.toString(), {
-				expirationTtl: 60,
+				expirationTtl: ttl,
 			});
 			return sessionID;
 		},

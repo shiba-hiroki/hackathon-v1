@@ -3,18 +3,18 @@ import { StatusCodes } from "http-status-codes";
 import { MIME } from "../../util/mime";
 import { ErrorMessageSchema } from "../../util/schema";
 import {
-	EmployeeRegistrationRequestSchema,
-	EmployeeRegistrationResponseSchema,
+	UserRegistrationRequestSchema,
+	UserRegistrationResponseSchema,
 } from "./schema";
 
-export const EmployeeRegistrationRouter = createRoute({
+export const UserRegistrationRouter = createRoute({
 	method: "post",
-	path: "api/employer/employee",
+	path: "api/employer/user",
 	request: {
 		body: {
 			content: {
 				[MIME.json]: {
-					schema: EmployeeRegistrationRequestSchema,
+					schema: UserRegistrationRequestSchema,
 				},
 			},
 		},
@@ -23,10 +23,10 @@ export const EmployeeRegistrationRouter = createRoute({
 		[StatusCodes.CREATED]: {
 			content: {
 				[MIME.json]: {
-					schema: EmployeeRegistrationResponseSchema,
+					schema: UserRegistrationResponseSchema,
 				},
 			},
-			description: "Successfully registered the employee",
+			description: "Successfully registered the user",
 		},
 		[StatusCodes.UNAUTHORIZED]: {
 			content: {
@@ -53,4 +53,5 @@ export const EmployeeRegistrationRouter = createRoute({
 			description: "internal server error",
 		},
 	},
+	security: [{ type: ["apiKey"], in: ["cookie"], name: ["SESSION_ID"] }],
 });

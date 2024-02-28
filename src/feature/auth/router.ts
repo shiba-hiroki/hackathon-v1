@@ -18,11 +18,6 @@ export const LoginRouter = createRoute({
 	},
 	responses: {
 		[StatusCodes.CREATED]: {
-			content: {
-				[MIME.json]: {
-					schema: LoginResPonseSchema,
-				},
-			},
 			description: "login succeeded",
 		},
 		[StatusCodes.UNAUTHORIZED]: {
@@ -31,7 +26,7 @@ export const LoginRouter = createRoute({
 					schema: ErrorMessageSchema,
 				},
 			},
-			description: "wrong password",
+			description: "unauthorized",
 		},
 		[StatusCodes.NOT_FOUND]: {
 			content: {

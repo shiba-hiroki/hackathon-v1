@@ -1,27 +1,31 @@
 import { RouteHandler } from "@hono/zod-openapi";
+import { Context } from "hono";
 import { StatusCodes } from "http-status-codes";
 import { hashedPassword } from "../../util/hash";
 import { UserRepository } from "./interface";
-import { EmployeeRegistrationRouter } from "./router";
+import { UserRegistrationRouter } from "./router";
 
-export const useEmployeeRegistrationHandler =
+export const useUserRegistrationHandler =
 	(
-		userRepository: UserRepository,
-		encryptionKey: string,
-		initializationVector: string,
-	): RouteHandler<typeof EmployeeRegistrationRouter> =>
+		userRepositoryFactory: (c: Context) => UserRepository,
+		encryptionKeyFactory: (c: Context) => string,
+		initializationVectorFactory: (c: Context) => string,
+	): RouteHandler<typeof UserRegistrationRouter> =>
 	async (c) => {
-		const { name, password } = c.req.valid("json");
+		const { name, type, password } = c.req.valid("json");
 
-		const user = await userRepository.crate({
+		const user = await userRepositoryFactory(c).crate({
 			name,
-			type: "employee",
+			type,
 			hashedPassword: await hashedPassword(
-				initializationVector,
-				encryptionKey,
+				initializationVectorFactory(c),
+				encryptionKeyFactory(c),
 				password,
 			),
 		});
 
-		return c.json(user, StatusCodes.CREATED);
+		return c.json(
+			{ name: user.name, id: user.id, type: user.type },
+			StatusCodes.CREATED,
+		);
 	};

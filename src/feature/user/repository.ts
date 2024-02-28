@@ -18,6 +18,16 @@ export const useUserRepository = (db: D1Database): UserRepository => {
 				where: eq(UserModel.name, name),
 			});
 		},
-		async crate(userCreate) {},
+		async crate(userCreate) {
+			return connection
+				.insert(schema.UserModel)
+				.values({
+					name: userCreate.name,
+					type: userCreate.type,
+					hashedPassword: userCreate.hashedPassword,
+				})
+				.returning()
+				.get();
+		},
 	};
 };

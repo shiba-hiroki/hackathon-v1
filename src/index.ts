@@ -1,18 +1,23 @@
+import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
+import { LoginHandler, userRegistrationHandler } from "./di";
+import { LoginRouter } from "./feature/auth/router";
+import { UserRegistrationRouter } from "./feature/user/router";
 
-type Bindings = {
-	DB: D1Database;
-	KV: KVNamespace;
-	ENCRYPTION_KEY: string;
-	INITIALIZATION_VECTOR: string;
-};
+const app = new OpenAPIHono();
 
-const app = new OpenAPIHono<{ Bindings: Bindings }>();
-
-app.get("/", async (c) => {
-	return c.text(
-		"I thought what I'd do was, I'd pretend I was one of those deaf-mutes",
-	);
+app.doc("/doc", {
+	openapi: "3.0.0",
+	info: {
+		version: "1.0.0",
+		title: "hackathon",
+	},
 });
+
+app.get("/ui", swaggerUI({ url: "/doc" }));
+
+app.openapi(LoginRouter, LoginHandler);
+
+app.openapi(UserRegistrationRouter, userRegistrationHandler);
 
 export default app;

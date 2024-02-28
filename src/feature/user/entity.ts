@@ -2,7 +2,7 @@ import z from "zod";
 
 export const UserType = z.enum(["employer", "employee"]);
 
-export type UserType = z.infer<typeof UserType>
+export type UserType = z.infer<typeof UserType>;
 
 const User = z.object({
 	id: z.number(),
