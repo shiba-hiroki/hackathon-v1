@@ -39,7 +39,7 @@ export const useLoginHandler =
 			3600,
 		);
 
-		await setCookie(c, "session_cookie", sessionID, {
+		setCookie(c, "session_cookie", sessionID, {
 			path: "/api",
 			secure: true,
 			httpOnly: true,
@@ -47,5 +47,5 @@ export const useLoginHandler =
 			sameSite: "Strict",
 		});
 
-		return c.json(StatusCodes.CREATED);
+		return c.body(null, StatusCodes.CREATED);
 	};

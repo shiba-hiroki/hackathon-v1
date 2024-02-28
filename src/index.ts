@@ -1,6 +1,7 @@
 import { swaggerUI } from "@hono/swagger-ui";
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { LoginHandler, userRegistrationHandler } from "./di";
+import { StatusCodes } from "http-status-codes";
+import { loginHandler, userRegistrationHandler } from "./di";
 import { LoginRouter } from "./feature/auth/router";
 import { UserRegistrationRouter } from "./feature/user/router";
 
@@ -16,8 +17,13 @@ app.doc("/doc", {
 
 app.get("/ui", swaggerUI({ url: "/doc" }));
 
-app.openapi(LoginRouter, LoginHandler);
+app.openapi(LoginRouter, loginHandler);
 
 app.openapi(UserRegistrationRouter, userRegistrationHandler);
+
+app.onError((err, c) => {
+	console.error(err);
+	return c.json(err.message, StatusCodes.INTERNAL_SERVER_ERROR);
+});
 
 export default app;

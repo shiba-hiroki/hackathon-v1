@@ -7,7 +7,7 @@ export const UserRegistrationRequestSchema = z
 		type: UserType,
 		password: z.string().min(8).max(256),
 	})
-	.openapi("UserRegisterSchema");
+	.openapi("UserRegisterRequestSchema");
 
 export const UserRegistrationResponseSchema = z
 	.object({
@@ -15,7 +15,7 @@ export const UserRegistrationResponseSchema = z
 		type: UserType,
 		name: z.string(),
 	})
-	.openapi("UserRegisterSchema");
+	.openapi("UserRegisterResponseSchema");
 
 export const resetUserPasswordRequestSchema = z
 	.object({

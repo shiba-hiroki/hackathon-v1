@@ -4,7 +4,6 @@
 		"deploy": "wrangler deploy --minify src/index.ts",
 		"check": "bunx @biomejs/biome check --apply src",
 		"migration": "bun wrangler d1 migrations apply hackathon --local",
-		"init": "bun wrangler d1 execute hackathon --local --file=\"./database/init.sql\"",
 		"destroy": "rm -rf ./.wrangler"
 	},
 	"dependencies": {

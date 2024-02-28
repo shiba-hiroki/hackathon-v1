@@ -6,7 +6,7 @@ import { LoginRequestSchema, LoginResPonseSchema } from "./schema";
 
 export const LoginRouter = createRoute({
 	method: "post",
-	path: "api/login",
+	path: "/api/login",
 	request: {
 		body: {
 			content: {

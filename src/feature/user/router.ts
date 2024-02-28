@@ -9,7 +9,7 @@ import {
 
 export const UserRegistrationRouter = createRoute({
 	method: "post",
-	path: "api/employer/user",
+	path: "/api/employer/user",
 	request: {
 		body: {
 			content: {

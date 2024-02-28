@@ -23,7 +23,7 @@ const encryptionKeyFactory = (c: ContextWithBindings) => c.env.ENCRYPTION_KEY;
 const initializationVectorFactory = (c: ContextWithBindings) =>
 	c.env.INITIALIZATION_VECTOR;
 
-export const LoginHandler = useLoginHandler(
+export const loginHandler = useLoginHandler(
 	kvFactory,
 	userRepositoryFactory,
 	encryptionKeyFactory,
