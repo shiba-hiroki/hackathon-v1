@@ -1,5 +1,8 @@
 import { Context } from "hono";
-import { useLoginHandler } from "./feature/auth/handler";
+import {
+	useEmployeeLoginHandler,
+	useEmployerLoginHandler,
+} from "./feature/auth/handler";
 import {
 	useEmployeeAuthentication,
 	useEmployerAuthentication,
@@ -55,7 +58,14 @@ export const employeeAuthentication = useEmployeeAuthentication(
 	setUserInContext,
 );
 
-export const loginHandler = useLoginHandler(
+export const employeeLoginHandler = useEmployeeLoginHandler(
+	kvFactory,
+	userRepositoryFactory,
+	encryptionKeyFactory,
+	initializationVectorFactory,
+);
+
+export const employerLoginHandler = useEmployerLoginHandler(
 	kvFactory,
 	userRepositoryFactory,
 	encryptionKeyFactory,

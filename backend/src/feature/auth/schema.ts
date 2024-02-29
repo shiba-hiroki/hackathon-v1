@@ -10,5 +10,6 @@ export const LoginRequestSchema = z
 export const LoginResPonseSchema = z
 	.object({
 		sessionID: z.string(),
+		userID: z.number(),
 	})
 	.openapi("LoginResPonseSchema");

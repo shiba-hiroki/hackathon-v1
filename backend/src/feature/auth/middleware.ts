@@ -17,13 +17,15 @@ const authenticateUser = async (
 	setUserInContextFactory: setUserInContextFactory,
 	userType?: UserType,
 ) => {
-	const sessionCookie = getCookie(c, sessionCookieName);
+	const sessionID =
+		getCookie(c, sessionCookieName) ||
+		c.req.header("Authentication")?.replace(/Bearer\s+/i, "");
 
-	if (sessionCookie == null) {
+	if (sessionID == null) {
 		return c.json({ message: "unauthorized" }, StatusCodes.UNAUTHORIZED);
 	}
 
-	const userID = await kvFactory(c).getUserID(sessionCookie);
+	const userID = await kvFactory(c).getUserID(sessionID);
 	if (userID == null) {
 		return c.json({ message: "unauthorized" }, StatusCodes.UNAUTHORIZED);
 	}
