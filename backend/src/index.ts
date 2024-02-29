@@ -39,4 +39,5 @@ app.onError((err, c) => {
 	return c.json(err.message, StatusCodes.INTERNAL_SERVER_ERROR);
 });
 
+
 export default app;

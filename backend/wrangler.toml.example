@@ -15,3 +15,4 @@ binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "hackathon"
 database_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 migrations_dir = "drizzle"
+

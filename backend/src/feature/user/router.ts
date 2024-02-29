@@ -2,6 +2,7 @@ import { createRoute } from "@hono/zod-openapi";
 import { StatusCodes } from "http-status-codes";
 import { MIME } from "../../util/mime";
 import { ErrorMessageSchema } from "../../util/schema";
+import { sessionCookieName } from "../auth/const";
 import {
 	UserRegistrationRequestSchema,
 	UserRegistrationResponseSchema,
@@ -53,5 +54,5 @@ export const UserRegistrationRouter = createRoute({
 			description: "internal server error",
 		},
 	},
-	security: [{ type: ["apiKey"], in: ["cookie"], name: ["SESSION_ID"] }],
+	security: [{ type: ["apiKey"], in: ["cookie"], name: [sessionCookieName] }],
 });
