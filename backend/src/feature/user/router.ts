@@ -1,7 +1,7 @@
 import { createRoute } from "@hono/zod-openapi";
 import { StatusCodes } from "http-status-codes";
 import { MIME } from "../../util/mime";
-import { ErrorMessageSchema } from "../../util/schema";
+import { ErrorResponse } from "../../util/schema";
 import { sessionCookieName } from "../auth/const";
 import {
 	UserRegistrationRequestSchema,
@@ -27,32 +27,9 @@ export const UserRegistrationRouter = createRoute({
 					schema: UserRegistrationResponseSchema,
 				},
 			},
-			description: "Successfully registered the user",
+			description: "successfully registered the user",
 		},
-		[StatusCodes.UNAUTHORIZED]: {
-			content: {
-				[MIME.json]: {
-					schema: ErrorMessageSchema,
-				},
-			},
-			description: "unauthorized",
-		},
-		[StatusCodes.FORBIDDEN]: {
-			content: {
-				[MIME.json]: {
-					schema: ErrorMessageSchema,
-				},
-			},
-			description: "not employer",
-		},
-		[StatusCodes.INTERNAL_SERVER_ERROR]: {
-			content: {
-				[MIME.json]: {
-					schema: ErrorMessageSchema,
-				},
-			},
-			description: "internal server error",
-		},
+		...ErrorResponse,
 	},
 	security: [{ type: ["apiKey"], in: ["cookie"], name: [sessionCookieName] }],
 });
