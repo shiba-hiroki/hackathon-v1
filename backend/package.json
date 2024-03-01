@@ -3,6 +3,7 @@
 		"dev": "wrangler dev src/index.ts",
 		"deploy": "wrangler deploy --minify src/index.ts",
 		"check": "bunx @biomejs/biome check --apply src",
+		"lint": "biome lint src",
 		"migration": "bun wrangler d1 migrations apply hackathon --local",
 		"destroy": "rm -rf ./.wrangler"
 	},

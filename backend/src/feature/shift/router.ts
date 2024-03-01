@@ -1,26 +1,50 @@
 import { createRoute } from "@hono/zod-openapi";
 import { StatusCodes } from "http-status-codes";
 import { MIME } from "../../util/mime";
-import { ErrorResponse } from "../../util/schema";
-import { ShiftRequestSchema } from "./schema";
+import { ErrorResponse, UserSecurity } from "../../util/schema";
+import {
+	GetConfirmedInMonthRequestQuery,
+	GetConfirmedInMonthResponseSchema,
+	UpdateShiftRequestInMonthSchema,
+} from "./schema";
 
-export const UpdateShiftRequestRouter = createRoute({
+export const UpdateShiftRequestInMonthRouter = createRoute({
 	method: "patch",
-	path: "/api/employer/shift/request",
+	path: "/api/employer/shift-request",
 	request: {
 		body: {
 			content: {
 				[MIME.json]: {
-					schema: ShiftRequestSchema,
+					schema: UpdateShiftRequestInMonthSchema,
 				},
 			},
 		},
 	},
 	responses: {
-		[StatusCodes.CREATED]: {
+		[StatusCodes.OK]: {
 			description: "successfully update shift request",
 		},
 		...ErrorResponse,
 	},
 	security: [{ type: ["Bearer"], in: ["headers"] }],
+});
+
+export const GetConfirmedInMonthRouter = createRoute({
+	method: "get",
+	path: "/api/user/confirmed-shift",
+	request: {
+		query: GetConfirmedInMonthRequestQuery,
+	},
+	responses: {
+		[StatusCodes.OK]: {
+			content: {
+				[MIME.json]: {
+					schema: GetConfirmedInMonthResponseSchema,
+				},
+			},
+			description: "successfully update shift request",
+		},
+		...ErrorResponse,
+	},
+	...UserSecurity,
 });

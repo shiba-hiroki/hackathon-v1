@@ -18,7 +18,7 @@ export const useShiftRequestRepository = (
 					),
 				);
 		},
-		async insertMany(shiftRequest) {
+		async insert(shiftRequest) {
 			await connection.insert(schema.ShiftRequestModel).values(
 				shiftRequest.shiftTime.map((s) => {
 					return {

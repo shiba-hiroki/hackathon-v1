@@ -1,17 +1,17 @@
 import { ConfirmedShift, ShiftRequest } from "./entity";
 
 export interface ShiftRequestRepository {
-	deleteInMonth(userID: number, year: number, month: number): Promise<void>;
-	insertMany(shiftRequest: ShiftRequest): Promise<void>;
+	deleteInMonth(userID: number, year: string, month: string): Promise<void>;
+	insert(shiftRequest: ShiftRequest): Promise<void>;
 	findInMonth(
 		userID: number,
-		year: number,
-		month: number,
+		year: string,
+		month: string,
 	): Promise<ShiftRequest>;
 }
 
 export interface ConfirmedShiftRepository {
-	deleteInMonth(year: number, month: number): Promise<void>;
+	deleteInMonth(year: string, month: string): Promise<void>;
 	insertMany(confirmedShifts: ConfirmedShift[]): Promise<void>;
-	findInMonth(year: number, month: number): Promise<ConfirmedShift[]>;
+	findInMonth(year: string, month: string): Promise<ConfirmedShift[]>;
 }

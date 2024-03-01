@@ -1,8 +1,27 @@
 import { z } from "@hono/zod-openapi";
 
-export const ShiftRequestSchema = z
-	.array(
-		z.tuple([z.date().describe("startTime"), z.date().describe("endTime")]),
-	)
+const shiftTime = z.array(
+	z.tuple([z.date().describe("startTime"), z.date().describe("endTime")]),
+);
+
+export const UpdateShiftRequestInMonthSchema = shiftTime
 	.describe("ある月のシフト希望が送られることを想定")
-	.openapi("ShiftRequestSchema");
+	.openapi("UpdateShiftRequestInMonthSchema");
+
+export const GetConfirmedInMonthRequestQuery = z.object({
+	year: z.string().openapi({ param: { in: "query" } }),
+	month: z.string().openapi({ param: { in: "query" } }),
+});
+
+export const GetConfirmedInMonthResponseSchema = z
+	.array(
+		z.object({
+			userID: z.number(),
+			shiftTime: shiftTime,
+		}),
+	)
+	.openapi("GetConfirmedInMonthResponseSchema");
+
+export type ParseGetConfirmedInMonthResponseSchema = z.infer<
+	typeof GetConfirmedInMonthResponseSchema
+>;

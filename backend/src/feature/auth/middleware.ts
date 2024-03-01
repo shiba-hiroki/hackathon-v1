@@ -3,18 +3,18 @@ import { getCookie } from "hono/cookie";
 import { createFactory } from "hono/factory";
 import { StatusCodes } from "http-status-codes";
 import {
-	kvFactory,
-	setUserInContextFactory,
-	userRepositoryFactory,
+	KvFactory,
+	SetUserInContextFactory,
+	UserRepositoryFactory,
 } from "../../factoryType";
 import { UserType } from "../user/entity";
 import { sessionCookieName } from "./const";
 
 const authenticateUser = async (
 	c: Context,
-	kvFactory: kvFactory,
-	userRepositoryFactory: userRepositoryFactory,
-	setUserInContextFactory: setUserInContextFactory,
+	kvFactory: KvFactory,
+	userRepositoryFactory: UserRepositoryFactory,
+	setUserInContextFactory: SetUserInContextFactory,
 	userType?: UserType,
 ) => {
 	const sessionID =
@@ -46,9 +46,9 @@ const authenticateUser = async (
 const factory = createFactory();
 
 export const useUserAuthentication = (
-	kvFactory: kvFactory,
-	userRepositoryFactory: userRepositoryFactory,
-	setUserInContextFactory: setUserInContextFactory,
+	kvFactory: KvFactory,
+	userRepositoryFactory: UserRepositoryFactory,
+	setUserInContextFactory: SetUserInContextFactory,
 ) =>
 	factory.createMiddleware(async (c, next) => {
 		const result = await authenticateUser(
@@ -62,9 +62,9 @@ export const useUserAuthentication = (
 	});
 
 export const useEmployerAuthentication = (
-	kvFactory: kvFactory,
-	userRepositoryFactory: userRepositoryFactory,
-	setUserInContextFactory: setUserInContextFactory,
+	kvFactory: KvFactory,
+	userRepositoryFactory: UserRepositoryFactory,
+	setUserInContextFactory: SetUserInContextFactory,
 ) =>
 	factory.createMiddleware(async (c, next) => {
 		const result = await authenticateUser(
@@ -79,9 +79,9 @@ export const useEmployerAuthentication = (
 	});
 
 export const useEmployeeAuthentication = (
-	kvFactory: kvFactory,
-	userRepositoryFactory: userRepositoryFactory,
-	setUserInContextFactory: setUserInContextFactory,
+	kvFactory: KvFactory,
+	userRepositoryFactory: UserRepositoryFactory,
+	setUserInContextFactory: SetUserInContextFactory,
 ) =>
 	factory.createMiddleware(async (c, next) => {
 		const result = await authenticateUser(

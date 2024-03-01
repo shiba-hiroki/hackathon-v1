@@ -1,10 +1,21 @@
 import { Context } from "hono";
+import {
+	ConfirmedShiftRepository,
+	ShiftRequestRepository,
+} from "./feature/shift/interface";
 import { User } from "./feature/user/entity";
 import { UserRepository } from "./feature/user/interface";
 import { KV } from "./kv/interface";
 
-export type kvFactory = (c: Context) => KV;
-export type userRepositoryFactory = (c: Context) => UserRepository;
-export type setUserInContextFactory = (c: Context) => (user: User) => void;
-export type encryptionKeyFactory = (c: Context) => string;
-export type initializationVectorFactory = (c: Context) => string;
+export type KvFactory = (c: Context) => KV;
+export type SetUserInContextFactory = (c: Context) => (user: User) => void;
+export type GetUserInContextFactory = (c: Context) => () => User;
+export type EncryptionKeyFactory = (c: Context) => string;
+export type InitializationVectorFactory = (c: Context) => string;
+export type UserRepositoryFactory = (c: Context) => UserRepository;
+export type ShiftRequestRepositoryFactory = (
+	c: Context,
+) => ShiftRequestRepository;
+export type ConfirmedShiftRepositoryFactory = (
+	c: Context,
+) => ConfirmedShiftRepository;

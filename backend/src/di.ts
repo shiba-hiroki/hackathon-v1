@@ -8,6 +8,14 @@ import {
 	useEmployerAuthentication,
 	useUserAuthentication,
 } from "./feature/auth/middleware";
+import {
+	useGetConfirmedShiftInMonthHandler,
+	useUpdateShiftRequestInMonthHandler,
+} from "./feature/shift/handler";
+import {
+	useConfirmedShiftRepository,
+	useShiftRequestRepository,
+} from "./feature/shift/repository";
 import { User } from "./feature/user/entity";
 import { useUserRegistrationHandler } from "./feature/user/handler";
 import { useUserRepository } from "./feature/user/repository";
@@ -29,9 +37,6 @@ export type ContextWithEnv = Context<Env>;
 
 const kvFactory = (c: ContextWithEnv) => useKV(c.env.KV);
 
-const userRepositoryFactory = (c: ContextWithEnv) =>
-	useUserRepository(c.env.DB);
-
 const encryptionKeyFactory = (c: ContextWithEnv) => c.env.ENCRYPTION_KEY;
 
 const initializationVectorFactory = (c: ContextWithEnv) =>
@@ -39,6 +44,17 @@ const initializationVectorFactory = (c: ContextWithEnv) =>
 
 const setUserInContext = (c: ContextWithEnv) => (user: User) =>
 	c.set("user", user);
+
+const getUserInContext = (c: ContextWithEnv) => () => c.var.user;
+
+const userRepositoryFactory = (c: ContextWithEnv) =>
+	useUserRepository(c.env.DB);
+
+const shiftRequestRepositoryFactory = (c: ContextWithEnv) =>
+	useShiftRequestRepository(c.env.DB);
+
+const confirmedShiftRepositoryFactory = (c: ContextWithEnv) =>
+	useConfirmedShiftRepository(c.env.DB);
 
 export const userAuthentication = useUserAuthentication(
 	kvFactory,
@@ -77,3 +93,12 @@ export const userRegistrationHandler = useUserRegistrationHandler(
 	encryptionKeyFactory,
 	initializationVectorFactory,
 );
+
+export const updateShiftRequestInMonthHandler =
+	useUpdateShiftRequestInMonthHandler(
+		shiftRequestRepositoryFactory,
+		getUserInContext,
+	);
+
+export const getConfirmedShiftInMonthHandler =
+	useGetConfirmedShiftInMonthHandler(confirmedShiftRepositoryFactory);
