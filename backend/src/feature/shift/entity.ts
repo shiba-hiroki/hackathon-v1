@@ -1,12 +1,10 @@
 import z from "zod";
+import { IOStime } from "../../util/time/iso";
 
 const Shift = z.object({
 	userID: z.number(),
 	shiftTime: z.array(
-		z.tuple([
-			z.string().datetime().describe("startTime"),
-			z.string().datetime().describe("endTime"),
-		]),
+		z.tuple([IOStime.describe("startTime"), IOStime.describe("endTime")]),
 	),
 });
 

@@ -1,10 +1,8 @@
 import { z } from "@hono/zod-openapi";
+import { IOStime } from "../../util/time/iso";
 
 const shiftTime = z.array(
-	z.tuple([
-		z.string().datetime().describe("startTime"),
-		z.string().datetime().describe("endTime"),
-	]),
+	z.tuple([IOStime.describe("startTime"), IOStime.describe("endTime")]),
 );
 
 export const UpdateShiftRequestInMonthSchema = shiftTime
@@ -20,7 +18,7 @@ export const GetConfirmedInMonthResponseSchema = z
 	.array(
 		z.object({
 			userID: z.number(),
-			shiftTime: shiftTime,
+			shiftTime: z.array(z.array(IOStime)), // tupleにするとエラーが出るのでarrayにしている
 		}),
 	)
 	.openapi("GetConfirmedInMonthResponseSchema");
