@@ -81,7 +81,6 @@ export const useConfirmedShiftRepository = (
 				.where(like(schema.ConfirmedShiftModel.startTime, prefix));
 			return shifts
 				.map((s) => s.userID)
-				.filter((id): id is number => id !== null)
 				.map((userID) => {
 					return {
 						userID,

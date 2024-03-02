@@ -6,16 +6,16 @@ import {
 } from "drizzle-orm/sqlite-core";
 import { UserModel } from "../user/model";
 
-export const AttendanceRecordModel = sqliteTable(
-	"attendance_records",
+export const AttendanceModel = sqliteTable(
+	"attendance",
 	{
-		userID: integer("user_id", { mode: "number" }).references(
-			() => UserModel.id,
-		),
+		userID: integer("user_id", { mode: "number" })
+			.references(() => UserModel.id)
+			.notNull(),
 		time: text("time").notNull(),
 		state: text("state", {
 			enum: ["checkIn", "checkOut", "brakeStart", "brakeEnd"],
-		}),
+		}).notNull(),
 	},
 	(table) => {
 		return {

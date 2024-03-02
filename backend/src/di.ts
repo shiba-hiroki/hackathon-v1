@@ -1,4 +1,6 @@
 import { Context } from "hono";
+import { useGetEmployeeAttendanceInMonthHandler } from "./feature/attendance/handler";
+import { useAttendanceRepository } from "./feature/attendance/repository";
 import {
 	useEmployeeLoginHandler,
 	useEmployerLoginHandler,
@@ -42,10 +44,10 @@ const encryptionKeyFactory = (c: ContextWithEnv) => c.env.ENCRYPTION_KEY;
 const initializationVectorFactory = (c: ContextWithEnv) =>
 	c.env.INITIALIZATION_VECTOR;
 
-const setUserInContext = (c: ContextWithEnv) => (user: User) =>
+const setUserInContextFactory = (c: ContextWithEnv) => (user: User) =>
 	c.set("user", user);
 
-const getUserInContext = (c: ContextWithEnv) => () => c.var.user;
+const getUserInContextFactory = (c: ContextWithEnv) => () => c.var.user;
 
 const userRepositoryFactory = (c: ContextWithEnv) =>
 	useUserRepository(c.env.DB);
@@ -56,22 +58,25 @@ const shiftRequestRepositoryFactory = (c: ContextWithEnv) =>
 const confirmedShiftRepositoryFactory = (c: ContextWithEnv) =>
 	useConfirmedShiftRepository(c.env.DB);
 
+const attendanceRecordRepositoryFactory = (c: ContextWithEnv) =>
+	useAttendanceRepository(c.env.DB);
+
 export const userAuthentication = useUserAuthentication(
 	kvFactory,
 	userRepositoryFactory,
-	setUserInContext,
+	setUserInContextFactory,
 );
 
 export const employerAuthentication = useEmployerAuthentication(
 	kvFactory,
 	userRepositoryFactory,
-	setUserInContext,
+	setUserInContextFactory,
 );
 
 export const employeeAuthentication = useEmployeeAuthentication(
 	kvFactory,
 	userRepositoryFactory,
-	setUserInContext,
+	setUserInContextFactory,
 );
 
 export const employeeLoginHandler = useEmployeeLoginHandler(
@@ -97,8 +102,14 @@ export const userRegistrationHandler = useUserRegistrationHandler(
 export const updateShiftRequestInMonthHandler =
 	useUpdateShiftRequestInMonthHandler(
 		shiftRequestRepositoryFactory,
-		getUserInContext,
+		getUserInContextFactory,
 	);
 
 export const getConfirmedShiftInMonthHandler =
 	useGetConfirmedShiftInMonthHandler(confirmedShiftRepositoryFactory);
+
+export const getEmployeeAttendanceInMonthHandler =
+	useGetEmployeeAttendanceInMonthHandler(
+		attendanceRecordRepositoryFactory,
+		getUserInContextFactory,
+	);

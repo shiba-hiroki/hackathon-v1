@@ -1,4 +1,5 @@
 import { Context } from "hono";
+import { AttendanceRepository } from "./feature/attendance/interface";
 import {
 	ConfirmedShiftRepository,
 	ShiftRequestRepository,
@@ -19,3 +20,4 @@ export type ShiftRequestRepositoryFactory = (
 export type ConfirmedShiftRepositoryFactory = (
 	c: Context,
 ) => ConfirmedShiftRepository;
+export type AttendanceRepositoryFactory = (c: Context) => AttendanceRepository;

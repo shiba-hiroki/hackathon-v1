@@ -9,10 +9,12 @@ import {
 	employerAuthentication,
 	employerLoginHandler,
 	getConfirmedShiftInMonthHandler,
+	getEmployeeAttendanceInMonthHandler,
 	updateShiftRequestInMonthHandler,
 	userAuthentication,
 	userRegistrationHandler,
 } from "./di";
+import { GetEmployeeAttendanceInMonthRouter } from "./feature/attendance/router";
 import {
 	EmployeeLoginRouter,
 	EmployerLoginRouter,
@@ -49,6 +51,10 @@ app.openapi(UserRegistrationRouter, userRegistrationHandler);
 
 app.use("/api/employee/*", employeeAuthentication);
 app.openapi(UpdateShiftRequestInMonthRouter, updateShiftRequestInMonthHandler);
+app.openapi(
+	GetEmployeeAttendanceInMonthRouter,
+	getEmployeeAttendanceInMonthHandler,
+);
 
 app.onError((err, c) => {
 	console.error(err);
