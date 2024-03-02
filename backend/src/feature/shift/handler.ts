@@ -5,11 +5,11 @@ import {
 	GetUserInContextFactory,
 	ShiftRequestRepositoryFactory,
 } from "../../factoryType";
+import { getMonth, getYear } from "../../util/time/iso";
 import {
 	GetConfirmedInMonthRouter,
 	UpdateShiftRequestInMonthRouter,
 } from "./router";
-import { GetConfirmedInMonthResponseSchema } from "./schema";
 
 export const useUpdateShiftRequestInMonthHandler =
 	(
@@ -21,8 +21,8 @@ export const useUpdateShiftRequestInMonthHandler =
 
 		await shiftRequestRepositoryFactory(c).deleteInMonth(
 			getUserInContextFactory(c)().id,
-			shiftTime[0][0].toLocaleDateString().slice(0, 4),
-			shiftTime[0][0].toLocaleDateString().slice(5, 6),
+			getYear(shiftTime[0][0]),
+			getMonth(shiftTime[0][0]),
 		);
 
 		await shiftRequestRepositoryFactory(c).insert({
@@ -52,12 +52,13 @@ export const useGetConfirmedShiftInMonthHandler =
 			month,
 		);
 
-		const response: GetConfirmedInMonthResponseSchema = shifts.map((s) => {
-			return {
-				userID: s.userID,
-				shiftTime: s.shiftTime,
-			};
-		});
-
-		return c.json(response, StatusCodes.OK);
+		return c.json(
+			shifts.map((s) => {
+				return {
+					userID: s.userID,
+					shiftTime: s.shiftTime,
+				};
+			}),
+			StatusCodes.OK,
+		);
 	};

@@ -3,7 +3,10 @@ import z from "zod";
 const Shift = z.object({
 	userID: z.number(),
 	shiftTime: z.array(
-		z.tuple([z.date().describe("startTime"), z.date().describe("endTime")]),
+		z.tuple([
+			z.string().datetime().describe("startTime"),
+			z.string().datetime().describe("endTime"),
+		]),
 	),
 });
 

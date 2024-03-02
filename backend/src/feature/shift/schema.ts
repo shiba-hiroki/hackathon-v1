@@ -1,7 +1,10 @@
 import { z } from "@hono/zod-openapi";
 
 const shiftTime = z.array(
-	z.tuple([z.date().describe("startTime"), z.date().describe("endTime")]),
+	z.tuple([
+		z.string().datetime().describe("startTime"),
+		z.string().datetime().describe("endTime"),
+	]),
 );
 
 export const UpdateShiftRequestInMonthSchema = shiftTime
@@ -21,7 +24,3 @@ export const GetConfirmedInMonthResponseSchema = z
 		}),
 	)
 	.openapi("GetConfirmedInMonthResponseSchema");
-
-export type ParseGetConfirmedInMonthResponseSchema = z.infer<
-	typeof GetConfirmedInMonthResponseSchema
->;
