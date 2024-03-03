@@ -1,5 +1,8 @@
 import { Context } from "hono";
-import { useGetMyAttendanceInMonthHandler } from "./feature/attendance/handler";
+import {
+	useGetAttendanceInMonthHandler,
+	useGetMyAttendanceInMonthHandler,
+} from "./feature/attendance/handler";
 import { useAttendanceRepository } from "./feature/attendance/repository";
 import {
 	useEmployeeLoginHandler,
@@ -119,4 +122,8 @@ export const getConfirmedShiftInMonthHandler =
 export const getMyAttendanceInMonthHandler = useGetMyAttendanceInMonthHandler(
 	attendanceRecordRepositoryFactory,
 	getUserInContextFactory,
+);
+
+export const getAttendanceInMonthHandler = useGetAttendanceInMonthHandler(
+	attendanceRecordRepositoryFactory,
 );

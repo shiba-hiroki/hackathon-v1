@@ -8,6 +8,7 @@ import {
 	employeeLoginHandler,
 	employerAuthentication,
 	employerLoginHandler,
+	getAttendanceInMonthHandler,
 	getConfirmedShiftInMonthHandler,
 	getMyAttendanceInMonthHandler,
 	updateShiftRequestInMonthHandler,
@@ -16,7 +17,10 @@ import {
 	userListHandler,
 	userRegistrationHandler,
 } from "./di";
-import { GetMyAttendanceInMonthRouter } from "./feature/attendance/router";
+import {
+	GetAttendanceInMonthRouter,
+	GetMyAttendanceInMonthRouter,
+} from "./feature/attendance/router";
 import {
 	EmployeeLoginRouter,
 	EmployerLoginRouter,
@@ -56,6 +60,7 @@ app.use("/api/employer/*", employerAuthentication);
 app.openapi(UserRegistrationRouter, userRegistrationHandler);
 app.openapi(UserListRouter, userListHandler);
 app.openapi(UserDeleteRouter, userDeleteHandler);
+app.openapi(GetAttendanceInMonthRouter, getAttendanceInMonthHandler);
 
 app.use("/api/employee/*", employeeAuthentication);
 app.openapi(UpdateShiftRequestInMonthRouter, updateShiftRequestInMonthHandler);
