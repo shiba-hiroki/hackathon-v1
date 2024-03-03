@@ -13,7 +13,7 @@ import {
 
 export const UpdateShiftRequestInMonthRouter = createRoute({
 	method: "patch",
-	path: "/api/employee/shift-request",
+	path: "/api/employee/shiftRequest",
 	request: {
 		body: {
 			content: {
@@ -34,7 +34,7 @@ export const UpdateShiftRequestInMonthRouter = createRoute({
 
 export const ListShiftRequestInMonthRouter = createRoute({
 	method: "get",
-	path: "/api/employer/shift-request",
+	path: "/api/employer/shiftRequest",
 	request: {
 		query: ListShiftRequestInMonthRequestQuery,
 	},
@@ -54,7 +54,7 @@ export const ListShiftRequestInMonthRouter = createRoute({
 
 export const UpdateConfirmedShiftInMonthRouter = createRoute({
 	method: "patch",
-	path: "/api/employee/confirmed-shift",
+	path: "/api/employee/confirmedShift",
 	request: {
 		body: {
 			content: {
@@ -75,7 +75,7 @@ export const UpdateConfirmedShiftInMonthRouter = createRoute({
 
 export const GetConfirmedInMonthRouter = createRoute({
 	method: "get",
-	path: "/api/user/confirmed-shift",
+	path: "/api/user/confirmedShift",
 	request: {
 		query: GetConfirmedInMonthRequestQuery,
 	},

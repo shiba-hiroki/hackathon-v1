@@ -4,8 +4,8 @@
     "wrangler": "^3.25.0"
   },
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts"
+    "dev": "wrangler dev index.ts",
+    "deploy": "wrangler deploy --minify index.ts"
   },
   "dependencies": {
     "zod": "^3.22.4"
