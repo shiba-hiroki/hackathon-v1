@@ -9,12 +9,14 @@ import {
 	employerAuthentication,
 	employerLoginHandler,
 	getConfirmedShiftInMonthHandler,
-	getEmployeeAttendanceInMonthHandler,
+	getMyAttendanceInMonthHandler,
 	updateShiftRequestInMonthHandler,
 	userAuthentication,
+	userDeleteHandler,
+	userListHandler,
 	userRegistrationHandler,
 } from "./di";
-import { GetEmployeeAttendanceInMonthRouter } from "./feature/attendance/router";
+import { GetMyAttendanceInMonthRouter } from "./feature/attendance/router";
 import {
 	EmployeeLoginRouter,
 	EmployerLoginRouter,
@@ -23,7 +25,11 @@ import {
 	GetConfirmedInMonthRouter,
 	UpdateShiftRequestInMonthRouter,
 } from "./feature/shift/router";
-import { UserRegistrationRouter } from "./feature/user/router";
+import {
+	UserDeleteRouter,
+	UserListRouter,
+	UserRegistrationRouter,
+} from "./feature/user/router";
 
 const app = new OpenAPIHono();
 
@@ -48,13 +54,12 @@ app.openapi(GetConfirmedInMonthRouter, getConfirmedShiftInMonthHandler);
 
 app.use("/api/employer/*", employerAuthentication);
 app.openapi(UserRegistrationRouter, userRegistrationHandler);
+app.openapi(UserListRouter, userListHandler);
+app.openapi(UserDeleteRouter, userDeleteHandler);
 
 app.use("/api/employee/*", employeeAuthentication);
 app.openapi(UpdateShiftRequestInMonthRouter, updateShiftRequestInMonthHandler);
-app.openapi(
-	GetEmployeeAttendanceInMonthRouter,
-	getEmployeeAttendanceInMonthHandler,
-);
+app.openapi(GetMyAttendanceInMonthRouter, getMyAttendanceInMonthHandler);
 
 app.onError((err, c) => {
 	console.error(err);

@@ -10,7 +10,7 @@ export const AttendanceModel = sqliteTable(
 	"attendance",
 	{
 		userID: integer("user_id", { mode: "number" })
-			.references(() => UserModel.id)
+			.references(() => UserModel.id, { onDelete: "cascade" })
 			.notNull(),
 		time: text("time").notNull(),
 		state: text("state", {

@@ -1,5 +1,5 @@
 import { Context } from "hono";
-import { useGetEmployeeAttendanceInMonthHandler } from "./feature/attendance/handler";
+import { useGetMyAttendanceInMonthHandler } from "./feature/attendance/handler";
 import { useAttendanceRepository } from "./feature/attendance/repository";
 import {
 	useEmployeeLoginHandler,
@@ -19,7 +19,11 @@ import {
 	useShiftRequestRepository,
 } from "./feature/shift/repository";
 import { User } from "./feature/user/entity";
-import { useUserRegistrationHandler } from "./feature/user/handler";
+import {
+	useUserDeleteHandler,
+	useUserListHandler,
+	useUserRegistrationHandler,
+} from "./feature/user/handler";
 import { useUserRepository } from "./feature/user/repository";
 import { useKV } from "./kv/kv";
 
@@ -99,6 +103,10 @@ export const userRegistrationHandler = useUserRegistrationHandler(
 	initializationVectorFactory,
 );
 
+export const userDeleteHandler = useUserDeleteHandler(userRepositoryFactory);
+
+export const userListHandler = useUserListHandler(userRepositoryFactory);
+
 export const updateShiftRequestInMonthHandler =
 	useUpdateShiftRequestInMonthHandler(
 		shiftRequestRepositoryFactory,
@@ -108,8 +116,7 @@ export const updateShiftRequestInMonthHandler =
 export const getConfirmedShiftInMonthHandler =
 	useGetConfirmedShiftInMonthHandler(confirmedShiftRepositoryFactory);
 
-export const getEmployeeAttendanceInMonthHandler =
-	useGetEmployeeAttendanceInMonthHandler(
-		attendanceRecordRepositoryFactory,
-		getUserInContextFactory,
-	);
+export const getMyAttendanceInMonthHandler = useGetMyAttendanceInMonthHandler(
+	attendanceRecordRepositoryFactory,
+	getUserInContextFactory,
+);

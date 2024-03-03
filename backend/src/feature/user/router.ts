@@ -3,9 +3,43 @@ import { StatusCodes } from "http-status-codes";
 import { MIME } from "../../util/mime";
 import { EmployerSecurity, ErrorResponse } from "../../util/schema";
 import {
+	UserIDPathParam,
+	UserListResponseSchema,
 	UserRegistrationRequestSchema,
-	UserRegistrationResponseSchema,
+	UserResponseSchema,
 } from "./schema";
+
+export const UserListRouter = createRoute({
+	method: "get",
+	path: "/api/employer/user",
+	responses: {
+		[StatusCodes.OK]: {
+			content: {
+				[MIME.json]: {
+					schema: UserListResponseSchema,
+				},
+			},
+			description: "successfully get user list",
+		},
+		...ErrorResponse,
+	},
+	...EmployerSecurity,
+});
+
+export const UserDeleteRouter = createRoute({
+	method: "delete",
+	path: "/api/employer/user/{id}",
+	request: {
+		params: UserIDPathParam,
+	},
+	responses: {
+		[StatusCodes.NO_CONTENT]: {
+			description: "successfully delete the user",
+		},
+		...ErrorResponse,
+	},
+	...EmployerSecurity,
+});
 
 export const UserRegistrationRouter = createRoute({
 	method: "post",
@@ -23,7 +57,7 @@ export const UserRegistrationRouter = createRoute({
 		[StatusCodes.CREATED]: {
 			content: {
 				[MIME.json]: {
-					schema: UserRegistrationResponseSchema,
+					schema: UserResponseSchema,
 				},
 			},
 			description: "successfully registered the user",

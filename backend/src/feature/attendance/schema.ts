@@ -6,7 +6,7 @@ const Attendance = z.object({
 	state: z.enum(["checkIn", "checkOut", "brakeStart", "brakeEnd"]),
 });
 
-export const GetEmployeeAttendanceInMonthRequestQuery = z.object({
+export const GetMyAttendanceInMonthRequestQuery = z.object({
 	year: z.string().openapi({ param: { in: "query" } }),
 	month: z.string().openapi({ param: { in: "query" } }),
 });

@@ -4,13 +4,13 @@ import {
 	AttendanceRepositoryFactory,
 	GetUserInContextFactory,
 } from "../../factoryType";
-import { GetEmployeeAttendanceInMonthRouter } from "./router";
+import { GetMyAttendanceInMonthRouter } from "./router";
 
-export const useGetEmployeeAttendanceInMonthHandler =
+export const useGetMyAttendanceInMonthHandler =
 	(
 		attendanceRepositoryFactory: AttendanceRepositoryFactory,
 		getUserInContextFactory: GetUserInContextFactory,
-	): RouteHandler<typeof GetEmployeeAttendanceInMonthRouter> =>
+	): RouteHandler<typeof GetMyAttendanceInMonthRouter> =>
 	async (c) => {
 		const year = c.req.query("year");
 		const month = c.req.query("month");

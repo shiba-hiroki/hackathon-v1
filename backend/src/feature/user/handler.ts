@@ -6,7 +6,30 @@ import {
 	UserRepositoryFactory,
 } from "../../factoryType";
 import { hashedPassword } from "../../util/hash";
-import { UserRegistrationRouter } from "./router";
+import {
+	UserDeleteRouter,
+	UserListRouter,
+	UserRegistrationRouter,
+} from "./router";
+
+export const useUserListHandler =
+	(
+		userRepositoryFactory: UserRepositoryFactory,
+	): RouteHandler<typeof UserListRouter> =>
+	async (c) => {
+		const users = await userRepositoryFactory(c).list();
+
+		return c.json(
+			users.map((user) => {
+				return {
+					id: user.id,
+					name: user.name,
+					type: user.type,
+				};
+			}),
+			StatusCodes.OK,
+		);
+	};
 
 export const useUserRegistrationHandler =
 	(
@@ -31,4 +54,16 @@ export const useUserRegistrationHandler =
 			{ name: user.name, id: user.id, type: user.type },
 			StatusCodes.CREATED,
 		);
+	};
+
+export const useUserDeleteHandler =
+	(
+		userRepositoryFactory: UserRepositoryFactory,
+	): RouteHandler<typeof UserDeleteRouter> =>
+	async (c) => {
+		const { id } = c.req.param();
+
+		await userRepositoryFactory(c).delete(Number(id));
+
+		return c.json(StatusCodes.NO_CONTENT);
 	};

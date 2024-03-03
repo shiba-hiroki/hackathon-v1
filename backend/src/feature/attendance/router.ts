@@ -3,15 +3,15 @@ import { StatusCodes } from "http-status-codes";
 import { MIME } from "../../util/mime";
 import { EmployeeSecurity, ErrorResponse } from "../../util/schema";
 import {
-	GetEmployeeAttendanceInMonthRequestQuery,
 	GetAttendanceInMonthResponseSchema,
+	GetMyAttendanceInMonthRequestQuery,
 } from "./schema";
 
-export const GetEmployeeAttendanceInMonthRouter = createRoute({
+export const GetMyAttendanceInMonthRouter = createRoute({
 	method: "get",
 	path: "/api/employee/attendance",
 	request: {
-		query: GetEmployeeAttendanceInMonthRequestQuery,
+		query: GetMyAttendanceInMonthRequestQuery,
 	},
 	responses: {
 		[StatusCodes.OK]: {

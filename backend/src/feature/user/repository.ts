@@ -9,14 +9,23 @@ export const useUserRepository = (db: D1Database): UserRepository => {
 
 	return {
 		async findByID(id: number) {
-			return connection.query.UserModel.findFirst({
+			const user = await connection.query.UserModel.findFirst({
 				where: eq(UserModel.id, id),
 			});
+			if (user == null) return undefined;
+			return { id: user.id, type: user.type, name: user.name };
 		},
 		async findByName(name) {
-			return connection.query.UserModel.findFirst({
+			const user = await connection.query.UserModel.findFirst({
 				where: eq(UserModel.name, name),
 			});
+			if (user == null) return undefined;
+			return {
+				id: user.id,
+				type: user.type,
+				name: user.name,
+				hashedPassword: user.hashedPassword,
+			};
 		},
 		async crate(userCreate) {
 			return connection
@@ -28,6 +37,14 @@ export const useUserRepository = (db: D1Database): UserRepository => {
 				})
 				.returning()
 				.get();
+		},
+		async delete(userID) {
+			await connection
+				.delete(schema.UserModel)
+				.where(eq(schema.UserModel.id, userID));
+		},
+		async list() {
+			return connection.query.UserModel.findMany({});
 		},
 	};
 };
