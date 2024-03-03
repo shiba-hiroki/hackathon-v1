@@ -8,6 +8,8 @@ import {
 import { getMonth, getYear } from "../../util/time/iso";
 import {
 	GetConfirmedInMonthRouter,
+	ListShiftRequestInMonthRouter,
+	UpdateConfirmedShiftInMonthRouter,
 	UpdateShiftRequestInMonthRouter,
 } from "./router";
 
@@ -29,6 +31,60 @@ export const useUpdateShiftRequestInMonthHandler =
 			userID: getUserInContextFactory(c)().id,
 			shiftTime,
 		});
+
+		return c.body(null, StatusCodes.OK);
+	};
+
+export const useListShiftRequestInMonthHandler =
+	(
+		shiftRequestRepositoryFactory: ShiftRequestRepositoryFactory,
+	): RouteHandler<typeof ListShiftRequestInMonthRouter> =>
+	async (c) => {
+		const year = c.req.query("year");
+		const month = c.req.query("month");
+		if (year == null || month == null) {
+			return c.json(
+				{ message: "require year and month" },
+				StatusCodes.BAD_REQUEST,
+			);
+		}
+
+		const shifts = await shiftRequestRepositoryFactory(c).listInMonth(
+			year,
+			month,
+		);
+
+		return c.json(
+			shifts.map((s) => {
+				return {
+					userID: s.userID,
+					shiftTime: s.shiftTime,
+				};
+			}),
+			StatusCodes.OK,
+		);
+	};
+
+export const useUpdateConfirmedShiftInMonthHandler =
+	(
+		confirmedShiftRepositoryFactory: ConfirmedShiftRepositoryFactory,
+	): RouteHandler<typeof UpdateConfirmedShiftInMonthRouter> =>
+	async (c) => {
+		const shiftTimes = c.req.valid("json");
+
+		await confirmedShiftRepositoryFactory(c).deleteInMonth(
+			getYear(shiftTimes[0].shiftTime[0][0]),
+			getMonth(shiftTimes[0].shiftTime[0][0]),
+		);
+
+		await confirmedShiftRepositoryFactory(c).insertMany(
+			shiftTimes.map((s) => {
+				return {
+					userID: s.userID,
+					shiftTime: s.shiftTime.map((s) => [s[0], s[1]]),
+				};
+			}),
+		);
 
 		return c.body(null, StatusCodes.OK);
 	};

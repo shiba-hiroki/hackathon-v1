@@ -8,6 +8,7 @@ export interface ShiftRequestRepository {
 		year: string,
 		month: string,
 	): Promise<ShiftRequest>;
+	listInMonth(year: string, month: string): Promise<ShiftRequest[]>;
 }
 
 export interface ConfirmedShiftRepository {

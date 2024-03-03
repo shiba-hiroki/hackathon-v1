@@ -15,6 +15,8 @@ import {
 } from "./feature/auth/middleware";
 import {
 	useGetConfirmedShiftInMonthHandler,
+	useListShiftRequestInMonthHandler,
+	useUpdateConfirmedShiftInMonthHandler,
 	useUpdateShiftRequestInMonthHandler,
 } from "./feature/shift/handler";
 import {
@@ -116,8 +118,15 @@ export const updateShiftRequestInMonthHandler =
 		getUserInContextFactory,
 	);
 
+export const listShiftRequestInMonthHandler = useListShiftRequestInMonthHandler(
+	shiftRequestRepositoryFactory,
+);
+
 export const getConfirmedShiftInMonthHandler =
 	useGetConfirmedShiftInMonthHandler(confirmedShiftRepositoryFactory);
+
+export const updateConfirmedShiftInMonthHandler =
+	useUpdateConfirmedShiftInMonthHandler(confirmedShiftRepositoryFactory);
 
 export const getMyAttendanceInMonthHandler = useGetMyAttendanceInMonthHandler(
 	attendanceRecordRepositoryFactory,

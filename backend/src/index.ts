@@ -11,6 +11,8 @@ import {
 	getAttendanceInMonthHandler,
 	getConfirmedShiftInMonthHandler,
 	getMyAttendanceInMonthHandler,
+	listShiftRequestInMonthHandler,
+	updateConfirmedShiftInMonthHandler,
 	updateShiftRequestInMonthHandler,
 	userAuthentication,
 	userDeleteHandler,
@@ -27,6 +29,8 @@ import {
 } from "./feature/auth/router";
 import {
 	GetConfirmedInMonthRouter,
+	ListShiftRequestInMonthRouter,
+	UpdateConfirmedShiftInMonthRouter,
 	UpdateShiftRequestInMonthRouter,
 } from "./feature/shift/router";
 import {
@@ -61,6 +65,11 @@ app.openapi(UserRegistrationRouter, userRegistrationHandler);
 app.openapi(UserListRouter, userListHandler);
 app.openapi(UserDeleteRouter, userDeleteHandler);
 app.openapi(GetAttendanceInMonthRouter, getAttendanceInMonthHandler);
+app.openapi(
+	UpdateConfirmedShiftInMonthRouter,
+	updateConfirmedShiftInMonthHandler,
+);
+app.openapi(ListShiftRequestInMonthRouter, listShiftRequestInMonthHandler);
 
 app.use("/api/employee/*", employeeAuthentication);
 app.openapi(UpdateShiftRequestInMonthRouter, updateShiftRequestInMonthHandler);

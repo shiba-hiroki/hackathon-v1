@@ -47,6 +47,23 @@ export const useShiftRequestRepository = (
 				shiftTime: shifts.map((s) => [s.startTime, s.endTime]),
 			};
 		},
+		async listInMonth(year, month) {
+			const prefix = ToISOPrefixYearAndMonth(year, month);
+			const shifts = await connection
+				.select()
+				.from(schema.ShiftRequestModel)
+				.where(like(schema.ShiftRequestModel.startTime, prefix));
+			return shifts
+				.map((s) => s.userID)
+				.map((userID) => {
+					return {
+						userID,
+						shiftTime: shifts
+							.filter((s) => s.userID === userID)
+							.map((s) => [s.startTime, s.endTime]),
+					};
+				});
+		},
 	};
 };
 
