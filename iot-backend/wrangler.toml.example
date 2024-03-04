@@ -2,6 +2,9 @@ name = "iot-backend"
 compatibility_date = "2023-12-01"
 main = "index.ts"
 
+[vars]
+SECRET_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
 [[d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "hackathon"
