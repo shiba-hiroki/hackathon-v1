@@ -73,9 +73,10 @@ export const useConfirmedShiftRepository = (
 	const connection = drizzle(db, { schema });
 	return {
 		async deleteInMonth(year, month) {
+			const prefix = ToISOPrefixYearAndMonth(year, month);
 			await connection
 				.delete(schema.ConfirmedShiftModel)
-				.where(like(schema.ConfirmedShiftModel.startTime, `${year}/${month}%`));
+				.where(like(schema.ConfirmedShiftModel.startTime, prefix));
 		},
 		async insertMany(confirmedShifts) {
 			await connection.insert(schema.ConfirmedShiftModel).values(
