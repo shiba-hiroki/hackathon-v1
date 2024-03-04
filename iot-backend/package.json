@@ -1,13 +1,14 @@
 {
-  "devDependencies": {
-    "@cloudflare/workers-types": "^4.20240208.0",
-    "wrangler": "^3.25.0"
-  },
-  "scripts": {
-    "dev": "wrangler dev index.ts",
-    "deploy": "wrangler deploy --minify index.ts"
-  },
-  "dependencies": {
-    "zod": "^3.22.4"
-  }
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240208.0",
+		"wrangler": "^3.25.0"
+	},
+	"scripts": {
+		"dev": "wrangler dev index.ts",
+		"build": "bun build index.ts --outdir ./dist --watch",
+		"deploy": "wrangler deploy --minify dist/index.js"
+	},
+	"dependencies": {
+		"zod": "^3.22.4"
+	}
 }

@@ -14,7 +14,7 @@ export default {
 		const { pathname } = new URL(request.url);
 
 		if (
-			pathname === "/api/attendance" ||
+			pathname === "/api/attendance" &&
 			request.method.toUpperCase() === "POST"
 		) {
 			const requestBody = await request.json();
@@ -38,6 +38,6 @@ export default {
 
 			return new Response("INTERNAL SERVER ERROR", { status: 500 });
 		}
-		return new Response("NOT fOUND", { status: 404 });
+		return new Response("NOT FOUND", { status: 404 });
 	},
 };
