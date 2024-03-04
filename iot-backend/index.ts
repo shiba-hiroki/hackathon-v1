@@ -20,7 +20,7 @@ export default {
 				request.method.toUpperCase() === "POST"
 			) {
 				const apiKey = request.headers.get("X-Api-Key");
-				if (apiKey == null || apiKey === env.SECRET_KEY) {
+				if (apiKey == null || apiKey !== env.SECRET_KEY) {
 					return new Response("UNAUTHORIZED", { status: 401 });
 				}
 
