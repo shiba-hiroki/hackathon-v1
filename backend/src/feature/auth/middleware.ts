@@ -32,11 +32,11 @@ const authenticateUser = async (
 
 	const user = await userRepositoryFactory(c).findByID(Number(userID));
 	if (user == null) {
-		return c.json({ message: "not found user" }, StatusCodes.NOT_FOUND);
+		return c.json({ message: "user not found" }, StatusCodes.NOT_FOUND);
 	}
 
 	if (userType && user.type !== userType) {
-		return c.json({ message: `user not ${userType}` }, StatusCodes.FORBIDDEN);
+		return c.json({ message: `not ${userType}` }, StatusCodes.FORBIDDEN);
 	}
 
 	setUserInContextFactory(c)(user);
