@@ -19,7 +19,7 @@ const authenticateUser = async (
 ) => {
 	const sessionID =
 		getCookie(c, sessionCookieName) ||
-		c.req.header("Authentication")?.replace(/Bearer\s+/i, "");
+		c.req.header("Authorization")?.replace(/Bearer\s+/i, "");
 
 	if (sessionID == null) {
 		return c.json({ message: "unauthorized" }, StatusCodes.UNAUTHORIZED);
