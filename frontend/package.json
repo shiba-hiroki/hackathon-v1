@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/styled": "^11.11.0",
+    "@mui/styled-engine": "^5.15.11",
     "@mui/x-date-pickers": "^6.19.6",
     "@types/react-datepicker": "^6.0.3",
     "http-status-codes": "^2.3.0",
