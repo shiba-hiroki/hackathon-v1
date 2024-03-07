@@ -14,7 +14,7 @@ export const AttendanceModel = sqliteTable(
 			.notNull(),
 		time: text("time").notNull(),
 		state: text("state", {
-			enum: ["checkIn", "checkOut", "brakeStart", "brakeEnd"],
+			enum: ["checkIn", "checkOut", "breakStart", "breakEnd"],
 		}).notNull(),
 	},
 	(table) => {
