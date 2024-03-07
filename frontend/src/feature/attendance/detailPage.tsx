@@ -1,3 +1,4 @@
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { StatusCodes } from "http-status-codes";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -41,7 +42,7 @@ export const DetailAttendance = () => {
   };
 
   return (
-    <div style={{ width: "500px", margin: "20px" }}>
+    <div className="w-full h-full p-10">
       <Select
         instanceId="search-select-box"
         defaultValue={selectedValue}
@@ -50,6 +51,11 @@ export const DetailAttendance = () => {
         noOptionsMessage={() => "user not found"}
         placeholder={options.find((u) => u.id === Number(id))?.label}
         isSearchable={true}
+      />
+      <DatePicker
+        label={'"month" and "year"'}
+        views={["month", "year"]}
+        timezone="Asian/Tokyo"
       />
     </div>
   );
