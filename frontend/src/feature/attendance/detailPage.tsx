@@ -1,10 +1,18 @@
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { StatusCodes } from "http-status-codes";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { client } from "../../api/clinent";
 import { appURL } from "../../config/url";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export interface OptionType {
   id: number;
@@ -42,8 +50,9 @@ export const DetailAttendance = () => {
   };
 
   return (
-    <div className="w-full h-full p-10">
+    <div className="w-full h-full p-10 flex-col">
       <Select
+        className="mb-3"
         instanceId="search-select-box"
         defaultValue={selectedValue}
         options={options}
@@ -52,11 +61,15 @@ export const DetailAttendance = () => {
         placeholder={options.find((u) => u.id === Number(id))?.label}
         isSearchable={true}
       />
-      <DatePicker
-        label={'"month" and "year"'}
-        views={["month", "year"]}
-        timezone="Asian/Tokyo"
-      />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          views={["month", "year"]}
+          timezone="Asia/Tokyo"
+          onChange={(val: unknown) => {
+            console.log(val.$y, Number(val.$M) + 1);
+          }}
+        />
+      </LocalizationProvider>
     </div>
   );
 };
