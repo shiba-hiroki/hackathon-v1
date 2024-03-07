@@ -1,5 +1,4 @@
 import { Context } from "hono";
-import { getCookie } from "hono/cookie";
 import { createFactory } from "hono/factory";
 import { StatusCodes } from "http-status-codes";
 import {
@@ -8,7 +7,6 @@ import {
 	UserRepositoryFactory,
 } from "../../factoryType";
 import { UserType } from "../user/entity";
-import { sessionCookieName } from "./const";
 
 const authenticateUser = async (
 	c: Context,
@@ -17,9 +15,7 @@ const authenticateUser = async (
 	setUserInContextFactory: SetUserInContextFactory,
 	userType?: UserType,
 ) => {
-	const sessionID =
-		getCookie(c, sessionCookieName) ||
-		c.req.header("Authorization")?.replace(/Bearer\s+/i, "");
+	const sessionID = c.req.header("Authorization")?.replace(/Bearer\s+/i, "");
 
 	if (sessionID == null) {
 		return c.json({ message: "unauthorized" }, StatusCodes.UNAUTHORIZED);

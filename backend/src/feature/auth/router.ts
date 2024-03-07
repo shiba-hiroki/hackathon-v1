@@ -18,6 +18,11 @@ export const EmployerLoginRouter = createRoute({
 	},
 	responses: {
 		[StatusCodes.CREATED]: {
+			content: {
+				[MIME.json]: {
+					schema: LoginResPonseSchema,
+				},
+			},
 			description: "login succeeded",
 		},
 		[StatusCodes.UNAUTHORIZED]: {

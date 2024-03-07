@@ -1,11 +1,10 @@
 import { RouteHandler } from "@hono/zod-openapi";
 import { Context } from "hono";
-import { setCookie } from "hono/cookie";
 import { StatusCodes } from "http-status-codes";
 import { KV } from "../../kv/interface";
 import { decodePassword } from "../../util/hash";
 import { UserRepository } from "../user/interface";
-import { sessionCookieName, sessionIdTTL } from "./const";
+import { sessionIdTTL } from "./const";
 import { EmployeeLoginRouter, EmployerLoginRouter } from "./router";
 
 export const useEmployerLoginHandler =
@@ -40,15 +39,7 @@ export const useEmployerLoginHandler =
 			sessionIdTTL,
 		);
 
-		setCookie(c, sessionCookieName, sessionID, {
-			path: "/api",
-			secure: true,
-			httpOnly: true,
-			maxAge: sessionIdTTL,
-			sameSite: "None",
-		});
-
-		return c.body(null, StatusCodes.CREATED);
+		return c.json({ sessionID }, StatusCodes.CREATED);
 	};
 
 export const useEmployeeLoginHandler =
@@ -83,8 +74,5 @@ export const useEmployeeLoginHandler =
 			sessionIdTTL,
 		);
 
-		return c.json(
-			{ sessionID, userID: userWithHashedPassword.id },
-			StatusCodes.CREATED,
-		);
+		return c.json({ sessionID }, StatusCodes.CREATED);
 	};
