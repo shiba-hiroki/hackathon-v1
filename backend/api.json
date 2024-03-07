@@ -1,0 +1,875 @@
+{
+	"openapi": "3.0.0",
+	"info": { "version": "1.0.0", "title": "hackathon" },
+	"components": {
+		"schemas": {
+			"LoginResPonseSchema": {
+				"type": "object",
+				"properties": { "sessionID": { "type": "string" } },
+				"required": ["sessionID"]
+			},
+			"LoginRequestSchema": {
+				"type": "object",
+				"properties": {
+					"name": { "type": "string" },
+					"password": { "type": "string" }
+				},
+				"required": ["name", "password"]
+			},
+			"ShiftInMonthResponseSchema": {
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"userID": { "type": "number" },
+						"shiftTime": {
+							"type": "array",
+							"items": {
+								"type": "array",
+								"items": { "type": "string", "format": "date-time" }
+							}
+						}
+					},
+					"required": ["userID", "shiftTime"]
+				}
+			},
+			"UserResponseSchema": {
+				"type": "object",
+				"properties": {
+					"id": { "type": "number" },
+					"type": { "type": "string", "enum": ["employer", "employee"] },
+					"name": { "type": "string" }
+				},
+				"required": ["id", "type", "name"]
+			},
+			"UserRegisterRequestSchema": {
+				"type": "object",
+				"properties": {
+					"name": { "type": "string" },
+					"type": { "type": "string", "enum": ["employer", "employee"] },
+					"password": { "type": "string", "minLength": 8, "maxLength": 256 }
+				},
+				"required": ["name", "type", "password"]
+			},
+			"UserListResponseSchema": {
+				"type": "array",
+				"items": { "$ref": "#/components/schemas/UserResponseSchema" }
+			},
+			"GetAttendanceInMonthResponseSchema": {
+				"type": "object",
+				"properties": {
+					"userID": { "type": "number" },
+					"attendances": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"time": { "type": "string", "format": "date-time" },
+								"state": {
+									"type": "string",
+									"enum": ["checkIn", "checkOut", "breakStart", "breakEnd"]
+								}
+							},
+							"required": ["time", "state"]
+						}
+					}
+				},
+				"required": ["userID", "attendances"]
+			},
+			"UpdateShiftRequestInMonthSchema": {
+				"type": "array",
+				"items": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"type": "string",
+								"format": "date-time",
+								"description": "startTime"
+							},
+							{
+								"type": "string",
+								"format": "date-time",
+								"description": "endTime"
+							}
+						]
+					},
+					"minItems": 2,
+					"maxItems": 2
+				},
+				"description": "ある月のシフト希望が送られることを想定"
+			}
+		},
+		"parameters": {}
+	},
+	"paths": {
+		"/api/login/employee": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/LoginRequestSchema" }
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "login succeeded",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/LoginResPonseSchema" }
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "user not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/login/employer": {
+			"post": {
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/LoginRequestSchema" }
+						}
+					}
+				},
+				"responses": {
+					"201": { "description": "login succeeded" },
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "user not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/user/confirmedShift": {
+			"get": {
+				"security": [
+					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
+				],
+				"parameters": [
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"in": "query",
+						"name": "year"
+					},
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"in": "query",
+						"name": "month"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successfully update shift request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShiftInMonthResponseSchema"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/employer/user": {
+			"post": {
+				"security": [
+					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserRegisterRequestSchema"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "successfully registered the user",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/UserResponseSchema" }
+							}
+						}
+					},
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"security": [
+					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
+				],
+				"responses": {
+					"200": {
+						"description": "successfully get user list",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserListResponseSchema"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/employer/user/{id}": {
+			"delete": {
+				"security": [
+					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
+				],
+				"parameters": [
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"name": "id",
+						"in": "path"
+					}
+				],
+				"responses": {
+					"204": { "description": "successfully delete the user" },
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/employer/attendance/{id}": {
+			"get": {
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
+				"parameters": [
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"name": "id",
+						"in": "path"
+					},
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"in": "query",
+						"name": "year"
+					},
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"in": "query",
+						"name": "month"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successfully get attendance list",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetAttendanceInMonthResponseSchema"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/employee/confirmedShift": {
+			"patch": {
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ShiftInMonthResponseSchema"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": { "description": "successfully update shift request" },
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/employer/shiftRequest": {
+			"get": {
+				"security": [
+					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
+				],
+				"parameters": [
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"in": "query",
+						"name": "year"
+					},
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"in": "query",
+						"name": "month"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successfully update shift request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ShiftInMonthResponseSchema"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/employee/shiftRequest": {
+			"patch": {
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateShiftRequestInMonthSchema"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": { "description": "successfully update shift request" },
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/employee/attendance": {
+			"get": {
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
+				"parameters": [
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"in": "query",
+						"name": "year"
+					},
+					{
+						"schema": { "type": "string" },
+						"required": true,
+						"in": "query",
+						"name": "month"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successfully get attendance list",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetAttendanceInMonthResponseSchema"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "not employer",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": { "message": { "type": "string" } },
+									"required": ["message"]
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

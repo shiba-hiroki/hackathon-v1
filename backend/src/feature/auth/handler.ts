@@ -45,7 +45,7 @@ export const useEmployerLoginHandler =
 			secure: true,
 			httpOnly: true,
 			maxAge: sessionIdTTL,
-			sameSite: "Strict",
+			sameSite: "None",
 		});
 
 		return c.body(null, StatusCodes.CREATED);
