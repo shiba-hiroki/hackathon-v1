@@ -7,7 +7,7 @@ export interface Env {
 const attendance = z.object({
 	userID: z.number(),
 	time: z.string().datetime({ offset: true }),
-	state: z.enum(["checkIn", "checkOut", "brakeStart", "brakeEnd"]),
+	state: z.enum(["checkIn", "checkOut", "breakStart", "breakEnd"]),
 });
 
 export default {
