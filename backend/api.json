@@ -170,7 +170,14 @@
 					}
 				},
 				"responses": {
-					"201": { "description": "login succeeded" },
+					"201": {
+						"description": "login succeeded",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/LoginResPonseSchema" }
+							}
+						}
+					},
 					"401": {
 						"description": "unauthorized",
 						"content": {
@@ -212,9 +219,7 @@
 		},
 		"/api/user/confirmedShift": {
 			"get": {
-				"security": [
-					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
-				],
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
 				"parameters": [
 					{
 						"schema": { "type": "string" },
@@ -293,9 +298,7 @@
 		},
 		"/api/employer/user": {
 			"post": {
-				"security": [
-					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
-				],
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
 				"requestBody": {
 					"content": {
 						"application/json": {
@@ -365,9 +368,7 @@
 				}
 			},
 			"get": {
-				"security": [
-					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
-				],
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
 				"responses": {
 					"200": {
 						"description": "successfully get user list",
@@ -432,9 +433,7 @@
 		},
 		"/api/employer/user/{id}": {
 			"delete": {
-				"security": [
-					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
-				],
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
 				"parameters": [
 					{
 						"schema": { "type": "string" },
@@ -648,9 +647,7 @@
 		},
 		"/api/employer/shiftRequest": {
 			"get": {
-				"security": [
-					{ "type": ["apiKey"], "in": ["cookie"], "name": ["session_cookie"] }
-				],
+				"security": [{ "type": ["Bearer"], "in": ["headers"] }],
 				"parameters": [
 					{
 						"schema": { "type": "string" },
