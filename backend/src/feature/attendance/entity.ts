@@ -1,8 +1,8 @@
 import z from "zod";
-import { IOStime } from "../../util/time/iso";
+import { ISOtime } from "../../util/time/iso";
 
 const Attendance = z.object({
-	time: IOStime,
+	time: ISOtime,
 	state: z.enum(["checkIn", "checkOut", "brakeStart", "brakeEnd"]),
 });
 

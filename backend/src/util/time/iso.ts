@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const IOStime = z.string().datetime({ offset: true });
+export const ISOtime = z.string().datetime({ offset: true });
 
 export const getYear = (ISOString: string) => ISOString.slice(0, 4);
 
