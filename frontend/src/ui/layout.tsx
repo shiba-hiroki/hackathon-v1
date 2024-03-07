@@ -1,22 +1,21 @@
-import { FaUser } from "react-icons/fa";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
+import { BiCalendar } from "react-icons/bi";
 import { TbFileReport } from "react-icons/tb";
-import { TbCloudSnow } from "react-icons/tb";
 
 import { NavLink, Outlet, ScrollRestoration } from "react-router-dom";
 import { appURL } from "../config/url";
 
 export function DefaultLayout() {
   const urls = [
-    { path: appURL.user, name: "USER", icon: FaUser },
-    { path: appURL.shift, name: "SHIFT", icon: FaRegCalendarAlt },
+    { path: appURL.user, name: "USER", icon: AiOutlineUser },
+    { path: appURL.shift, name: "SHIFT", icon: BiCalendar },
     { path: appURL.attendance, name: "ATTENDANCE", icon: TbFileReport },
   ];
   return (
     <>
       <ScrollRestoration />
       <main className="h-screen flex">
-        <nav className="h-screen w-fit bg-gray-100 pt-8 flex-col">
+        <nav className="h-screen w-1/5 bg-gray-100 pt-8 flex-col">
           <h1 className="mx-auto w-fit px-3 font-black">
             Attendance Management
           </h1>
@@ -26,10 +25,10 @@ export function DefaultLayout() {
                 <NavLink
                   to={url.path}
                   className={({ isActive }) =>
-                    isActive ? "" : "text-gray-400"
+                    isActive ? "text-cyan-400" : ""
                   }
                 >
-                  <div className="p-3 py-5 flex items-center gap-x-2 hover:bg-gray-200">
+                  <div className="p-3 py-5 flex items-center gap-x-2 hover:bg-gray-300">
                     <url.icon />
                     <p className="italic">{url.name}</p>
                   </div>
