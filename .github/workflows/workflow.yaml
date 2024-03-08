@@ -35,7 +35,7 @@ jobs:
       - name: npm install
         run: npm install
       - name: npm build
-        run: npm build
+        run: npm run build
         # GIthubページは https://USERNAME.github.io/REPOSITORY_NAME/
         # となるので、envを追加してviteのベースパスを変えるように設定します。
         env:
