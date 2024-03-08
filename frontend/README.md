@@ -2,14 +2,7 @@
 
 ## deploy
 
-### build
-
-```zsh
-bun run build
+````zsh
+bun run build && rm -rf ../docs && cp dist ../docs -r
 ```
 
-### update docs
-
-```zsh
-rm -rf ../docs | cp dist ../docs -r
-```
