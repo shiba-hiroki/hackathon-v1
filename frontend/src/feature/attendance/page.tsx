@@ -55,34 +55,37 @@ export const Attendance = () => {
   }, []);
 
   return (
-    <div className="w-5/6 h-screen px-10 flex-col">
-      <div className="w-full py-10">
-        <Select
-          className="mb-3"
-          instanceId="search-select-box"
-          options={options}
-          onChange={(option) => {
-            if (option) {
-              navigate(
-                appURL.detailAttendance
-                  .replace(":id", String(option.id))
-                  .replace(
-                    ":year",
-                    selectedYearAndMonth.current.year().toString(),
-                  )
-                  .replace(
-                    ":month",
-                    (selectedYearAndMonth.current.month() + 1)
-                      .toString()
-                      .padStart(2, "0"),
-                  ),
-              );
-            }
-          }}
-          noOptionsMessage={() => "user not found"}
-          placeholder={options.find((u) => u.id === Number(id))?.label}
-          isSearchable={true}
-        />
+    <div className="w-5/6 h-screen pl-10 flex-col">
+      <div className="w-full h-1/6 py-5 flex gap-x-3">
+        <div className="w-1/2">
+          <Select
+            className="mb-3"
+            instanceId="search-select-box"
+            options={options}
+            onChange={(option) => {
+              if (option) {
+                navigate(
+                  appURL.detailAttendance
+                    .replace(":id", String(option.id))
+                    .replace(
+                      ":year",
+                      selectedYearAndMonth.current.year().toString(),
+                    )
+                    .replace(
+                      ":month",
+                      (selectedYearAndMonth.current.month() + 1)
+                        .toString()
+                        .padStart(2, "0"),
+                    ),
+                );
+              }
+            }}
+            noOptionsMessage={() => "user not found"}
+            placeholder={options.find((u) => u.id === Number(id))?.label}
+            isSearchable={true}
+          />
+        </div>
+
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             views={["month", "year"]}
