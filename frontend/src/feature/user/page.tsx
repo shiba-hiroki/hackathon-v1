@@ -15,8 +15,11 @@ export function User() {
     components["schemas"]["UserListResponseSchema"]
   >([]);
 
-  const navigator = useNavigate();
+  // 日本時間
+  const now = new Date();
+  now.setTime(now.getTime() + 9 * 60 * 60 * 1000);
 
+  const navigator = useNavigate();
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     (async () => {
@@ -53,7 +56,13 @@ export function User() {
             <div className="flex w-full mt-6">
               <div className="w-1/2 flex items-center justify-center">
                 <Link
-                  to={appURL.detailAttendance.replace(":id", String(user.id))}
+                  to={appURL.detailAttendance
+                    .replace(":id", String(user.id))
+                    .replace(":year", String(now.toISOString().substring(0, 4)))
+                    .replace(
+                      ":month",
+                      String(now.toISOString().substring(5, 7)),
+                    )}
                 >
                   <IconContext.Provider
                     value={{ color: "#22d3ee", size: "30px" }}
