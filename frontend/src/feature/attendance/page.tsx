@@ -55,7 +55,7 @@ export const Attendance = () => {
   }, []);
 
   return (
-    <div className="w-full h-full px-10 flex-col">
+    <div className="w-5/6 h-screen px-10 flex-col">
       <div className="w-full py-10">
         <Select
           className="mb-3"

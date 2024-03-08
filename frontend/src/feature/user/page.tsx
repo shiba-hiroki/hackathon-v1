@@ -37,7 +37,7 @@ export function User() {
   };
 
   return (
-    <div className="w-full h-full p-10">
+    <div className="w-5/6 h-screen p-10">
       <h2 className="font-medium size-16 w-full text-center">USER LIST</h2>
       <div className="w-full flex flex-wrap gap-3">
         {users.map((user) => (

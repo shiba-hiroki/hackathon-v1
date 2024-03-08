@@ -20,7 +20,7 @@ export function DefaultLayout() {
     <>
       <ScrollRestoration />
       <main className="h-screen w-screen flex">
-        <nav className="h-screen w-1/5 bg-gray-100 pt-8 flex-col">
+        <nav className="h-screen w-1/6 bg-gray-100 pt-8 flex-col">
           <h1 className="mx-auto w-fit px-3 font-black">
             Attendance Management
           </h1>
