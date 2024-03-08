@@ -27,6 +27,7 @@ const router = createBrowserRouter(
       </Route>
     </>,
   ),
+  { basename: "/hackathon-v1/" },
 );
 
 function App() {
