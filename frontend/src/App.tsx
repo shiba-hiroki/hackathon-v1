@@ -5,6 +5,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import { appURL } from "./config/url";
+import { DetailAttendance } from "./feature/attendance/detailPage";
 import { Attendance } from "./feature/attendance/page";
 import { Login } from "./feature/auth/page";
 import { User } from "./feature/user/page";
@@ -18,7 +19,10 @@ const router = createBrowserRouter(
         <Route path={appURL.user} element={<User />} />
         <Route path={appURL.shift} element={<p>attendance</p>} />
         <Route path={appURL.attendance} element={<Attendance />}>
-          <Route path={appURL.detailAttendance} element={<p>index</p>} />
+          <Route
+            path={appURL.detailAttendance}
+            element={<DetailAttendance />}
+          />
         </Route>
       </Route>
     </>,

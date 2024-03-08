@@ -2,19 +2,24 @@ import { AiOutlineUser } from "react-icons/ai";
 import { BiCalendar } from "react-icons/bi";
 import { TbFileReport } from "react-icons/tb";
 
+import React from "react";
 import { NavLink, Outlet, ScrollRestoration } from "react-router-dom";
 import { appURL } from "../config/url";
 
+const MemoizedAiOutlineUser = React.memo(AiOutlineUser);
+const MemoizedBiCalendar = React.memo(BiCalendar);
+const MemoizedTbFileReport = React.memo(TbFileReport);
+
 export function DefaultLayout() {
   const urls = [
-    { path: appURL.user, name: "USER", icon: AiOutlineUser },
-    { path: appURL.shift, name: "SHIFT", icon: BiCalendar },
-    { path: appURL.attendance, name: "ATTENDANCE", icon: TbFileReport },
+    { path: appURL.user, name: "USER", icon: MemoizedAiOutlineUser },
+    { path: appURL.shift, name: "SHIFT", icon: MemoizedBiCalendar },
+    { path: appURL.attendance, name: "ATTENDANCE", icon: MemoizedTbFileReport },
   ];
   return (
     <>
       <ScrollRestoration />
-      <main className="h-screen flex">
+      <main className="h-screen w-screen flex">
         <nav className="h-screen w-1/5 bg-gray-100 pt-8 flex-col">
           <h1 className="mx-auto w-fit px-3 font-black">
             Attendance Management
