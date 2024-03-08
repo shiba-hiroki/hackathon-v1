@@ -5,7 +5,7 @@ import dayjs, { Dayjs } from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { StatusCodes } from "http-status-codes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import { client } from "../../api/clinent";
@@ -26,6 +26,14 @@ export const Attendance = () => {
     year: string;
     month: string;
   }>();
+
+  const selectedYearAndMonth = useRef<Dayjs>(
+    dayjs(
+      year && month
+        ? `${year}-${month}-15`
+        : new Date().toISOString().substring(0, 10),
+    ),
+  );
 
   const navigate = useNavigate();
 
@@ -58,8 +66,16 @@ export const Attendance = () => {
               navigate(
                 appURL.detailAttendance
                   .replace(":id", String(option.id))
-                  .replace(":year", String(year))
-                  .replace(":month", String(month)),
+                  .replace(
+                    ":year",
+                    selectedYearAndMonth.current.year().toString(),
+                  )
+                  .replace(
+                    ":month",
+                    (selectedYearAndMonth.current.month() + 1)
+                      .toString()
+                      .padStart(2, "0"),
+                  ),
               );
             }
           }}
@@ -71,22 +87,25 @@ export const Attendance = () => {
           <DatePicker
             views={["month", "year"]}
             timezone="Asia/Tokyo"
-            defaultValue={dayjs(
-              year && month
-                ? `${year}-${month}-15`
-                : new Date().toISOString().substring(0, 10),
-            )}
+            value={selectedYearAndMonth.current}
             onChange={(val: Dayjs | null) => {
               if (val) {
-                navigate(
-                  appURL.detailAttendance
-                    .replace(":id", String(id))
-                    .replace(":year", String(val.year()))
-                    .replace(
-                      ":month",
-                      String(val.month() + 1).padStart(2, "0"),
-                    ),
+                const selectYear = val.year().toString();
+                const selectMonth = (val.month() + 1)
+                  .toString()
+                  .padStart(2, "0");
+                selectedYearAndMonth.current = dayjs(
+                  `${selectYear}-${selectMonth}-15`,
                 );
+
+                if (id) {
+                  navigate(
+                    appURL.detailAttendance
+                      .replace(":id", id)
+                      .replace(":year", selectYear)
+                      .replace(":month", selectMonth),
+                  );
+                }
               }
             }}
           />
