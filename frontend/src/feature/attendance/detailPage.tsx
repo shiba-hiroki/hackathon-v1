@@ -9,9 +9,9 @@ type AttendanceState = "checkIn" | "checkOut" | "breakStart" | "breakEnd";
 
 const actionColors = {
   checkIn: "bg-green-300",
-  checkOut: "bg-blue-300",
-  breakStart: "bg-yellow-300",
-  breakEnd: "bg-orange-300",
+  checkOut: "bg-orange-300",
+  breakStart: "bg-blue-300",
+  breakEnd: "bg-yellow-300",
 };
 
 type GroupedAttendances = {
