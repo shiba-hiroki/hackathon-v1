@@ -44,6 +44,7 @@ jobs:
         run: npm install
 
       - name: Build with environment variable
+        id: build
         run: VITE_API_URL=$VITE_API_URL npm run build
 
       - name: Setup Pages
@@ -52,7 +53,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          target-folder: "./dist"
+          path: ${{steps.build.outputs.download-path}}
 
       - name: Deploy to GitHub Pages
         id: deployment
