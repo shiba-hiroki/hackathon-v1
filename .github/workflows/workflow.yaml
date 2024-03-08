@@ -53,7 +53,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ${{steps.build.outputs.download-path}}
+          path: echo ${{steps.build.outputs.download-path}}
 
       - name: Deploy to GitHub Pages
         id: deployment
