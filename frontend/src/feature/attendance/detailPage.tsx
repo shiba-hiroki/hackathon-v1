@@ -80,7 +80,7 @@ export const DetailAttendance = () => {
       {groupedAttendances ? (
         Object.keys(groupedAttendances).map((day) => (
           <div key={day} className="flex gap-x-2 p-0.5 w-1/2">
-            <h2 className="w-1/12 text-center text-lg font-bold rounded">
+            <h2 className="w-1/12 text-center text-lg font-bold">
               {day}
             </h2>
             {groupedAttendances[day].map((attendance) => (

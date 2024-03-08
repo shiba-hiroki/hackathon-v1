@@ -69,9 +69,8 @@ export function User() {
   };
 
   return (
-    <div className="w-5/6 h-screen p-10">
-      <div className="h-1/6 flex gap-y-2 justify-center items-center flex-col">
-        <h2 className="font-medium w-full text-center">USER LIST</h2>
+    <div className="w-5/6 h-screen p-4">
+      <div className="h-1/12 flex gap-y-1 justify-start items-center flex-col">
         <div className="flex items-center justify-center">
           <IconContext.Provider value={{ color: "#22d3ee", size: "30px" }}>
             <button
@@ -161,7 +160,7 @@ export function User() {
         )}
       </div>
       {users ? (
-        <div className="h-5/6 overflow-y-auto flex flex-wrap content-start justify-start">
+        <div className="h-11/12 overflow-y-auto flex flex-wrap content-start justify-start">
           {users.map((user) => (
             <div
               key={user.id}
