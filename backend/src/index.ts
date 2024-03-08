@@ -11,6 +11,7 @@ import {
 	getAttendanceInMonthHandler,
 	getConfirmedShiftInMonthHandler,
 	getMyAttendanceInMonthHandler,
+	getMyConfirmedInMonthHandler,
 	listShiftRequestInMonthHandler,
 	updateConfirmedShiftInMonthHandler,
 	updateShiftRequestInMonthHandler,
@@ -29,6 +30,7 @@ import {
 } from "./feature/auth/router";
 import {
 	GetConfirmedInMonthRouter,
+	GetMyConfirmedInMonthRouter,
 	ListShiftRequestInMonthRouter,
 	UpdateConfirmedShiftInMonthRouter,
 	UpdateShiftRequestInMonthRouter,
@@ -74,6 +76,7 @@ app.openapi(ListShiftRequestInMonthRouter, listShiftRequestInMonthHandler);
 app.use("/api/employee/*", employeeAuthentication);
 app.openapi(UpdateShiftRequestInMonthRouter, updateShiftRequestInMonthHandler);
 app.openapi(GetMyAttendanceInMonthRouter, getMyAttendanceInMonthHandler);
+app.openapi(GetMyConfirmedInMonthRouter, getMyConfirmedInMonthHandler);
 
 app.onError((err, c) => {
 	console.error(err);

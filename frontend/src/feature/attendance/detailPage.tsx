@@ -53,7 +53,7 @@ export const DetailAttendance = () => {
   }, [id, year, month]);
 
   return (
-    <div className="w-full h-full p-10 flex-col">
+    <div className="w-full p-10 flex-col">
       {attendances.map((attendance) => {
         return (
           <p key={`${id}${attendance.day}${attendance.time}`}>

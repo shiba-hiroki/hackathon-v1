@@ -8,6 +8,7 @@ import {
 import { getMonth, getYear } from "../../util/time/iso";
 import {
 	GetConfirmedInMonthRouter,
+	GetMyConfirmedInMonthRouter,
 	ListShiftRequestInMonthRouter,
 	UpdateConfirmedShiftInMonthRouter,
 	UpdateShiftRequestInMonthRouter,
@@ -103,7 +104,7 @@ export const useGetConfirmedShiftInMonthHandler =
 			);
 		}
 
-		const shifts = await confirmedShiftRepositoryFactory(c).findInMonth(
+		const shifts = await confirmedShiftRepositoryFactory(c).listInMonth(
 			year,
 			month,
 		);
@@ -117,4 +118,28 @@ export const useGetConfirmedShiftInMonthHandler =
 			}),
 			StatusCodes.OK,
 		);
+	};
+
+export const useGetMyConfirmedShiftInMonthHandler =
+	(
+		confirmedShiftRepositoryFactory: ConfirmedShiftRepositoryFactory,
+		getUserInContextFactory: GetUserInContextFactory,
+	): RouteHandler<typeof GetMyConfirmedInMonthRouter> =>
+	async (c) => {
+		const year = c.req.query("year");
+		const month = c.req.query("month");
+		if (year == null || month == null) {
+			return c.json(
+				{ message: "require year and month" },
+				StatusCodes.BAD_REQUEST,
+			);
+		}
+
+		const shifts = await confirmedShiftRepositoryFactory(c).findInMonth(
+			getUserInContextFactory(c)().id,
+			year,
+			month,
+		);
+
+		return c.json(shifts.shiftTime, StatusCodes.OK);
 	};

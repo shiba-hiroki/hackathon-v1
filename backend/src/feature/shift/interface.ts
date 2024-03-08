@@ -14,5 +14,10 @@ export interface ShiftRequestRepository {
 export interface ConfirmedShiftRepository {
 	deleteInMonth(year: string, month: string): Promise<void>;
 	insertMany(confirmedShifts: ConfirmedShift[]): Promise<void>;
-	findInMonth(year: string, month: string): Promise<ConfirmedShift[]>;
+	findInMonth(
+		userID: number,
+		year: string,
+		month: string,
+	): Promise<ConfirmedShift>;
+	listInMonth(year: string, month: string): Promise<ConfirmedShift[]>;
 }

@@ -92,7 +92,23 @@ export const useConfirmedShiftRepository = (
 				),
 			);
 		},
-		async findInMonth(year, month) {
+		async findInMonth(userID, year, month) {
+			const prefix = ToISOPrefixYearAndMonth(year, month);
+			const shifts = await connection
+				.select()
+				.from(schema.ConfirmedShiftModel)
+				.where(
+					and(
+						eq(schema.ConfirmedShiftModel.userID, userID),
+						like(schema.ConfirmedShiftModel.startTime, prefix),
+					),
+				);
+			return {
+				userID: userID,
+				shiftTime: shifts.map((s) => [s.startTime, s.endTime]),
+			};
+		},
+		async listInMonth(year, month) {
 			const prefix = ToISOPrefixYearAndMonth(year, month);
 			const shifts = await connection
 				.select()

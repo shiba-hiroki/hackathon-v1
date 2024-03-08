@@ -33,3 +33,5 @@ export const GetConfirmedInMonthRequestQuery = z.object({
 });
 
 export const GetConfirmedInMonthResponseSchema = shiftInMonthSchema;
+
+export const GetMyConfirmedInMonthResponseSchema = z.array(z.array(ISOtime)); // tupleにするとエラーが出るのでarrayにしている

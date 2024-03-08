@@ -5,6 +5,7 @@ import { ErrorResponse, UserSecurity } from "../../util/schema";
 import {
 	GetConfirmedInMonthRequestQuery,
 	GetConfirmedInMonthResponseSchema,
+	GetMyConfirmedInMonthResponseSchema,
 	ListShiftRequestInMonthRequestQuery,
 	ListShiftRequestInMonthSchema,
 	UpdateConfirmedShiftInMonthSchema,
@@ -84,6 +85,26 @@ export const GetConfirmedInMonthRouter = createRoute({
 			content: {
 				[MIME.json]: {
 					schema: GetConfirmedInMonthResponseSchema,
+				},
+			},
+			description: "successfully update shift request",
+		},
+		...ErrorResponse,
+	},
+	...UserSecurity,
+});
+
+export const GetMyConfirmedInMonthRouter = createRoute({
+	method: "get",
+	path: "/api/employee/confirmedShift",
+	request: {
+		query: GetConfirmedInMonthRequestQuery,
+	},
+	responses: {
+		[StatusCodes.OK]: {
+			content: {
+				[MIME.json]: {
+					schema: GetMyConfirmedInMonthResponseSchema,
 				},
 			},
 			description: "successfully update shift request",
